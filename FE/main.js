@@ -1,4 +1,32 @@
+//Setup
 const socket = io('ws://localhost:3000');
+const msgForm = document.getElementById("send-container");
+const txtInput = document.getElementById("message-input");
+const chatContainer = document.getElementById("chat-container");
+
+const userName = prompt("Please enter your name!")
+
+
+msgForm.addEventListener("submit",e=>{
+    e.preventDefault();
+    const msgTxt = txtInput.value;
+    socket.emit("chat-msg",{"message-text":msgTxt,"user-name":userName})
+    appendMessage(msgTxt,"You");
+
+    txtInput.value = "";
+});
+socket.on("chat-msg",msg=>{
+    console.log(msg);
+    appendMessage(msg["message-text"],msg["user-name"]);
+})
+
+const appendMessage = (message,user)=>{
+    msgElem = document.createElement("div");
+    msgElem.innerText = ` ${user}: ${message}`;
+    chatContainer.append(msgElem);
+}
+
+
 
 window.addEventListener('load',()=>{
     const canvas = document.getElementById("canvas");
@@ -8,8 +36,8 @@ window.addEventListener('load',()=>{
     let drawing = false;
     
     //resize :D
-    canvas.height = 1000;
-    canvas.width = 1000;
+    canvas.height = 50;
+    canvas.width =  50;
 
     
     const startPos = e =>{

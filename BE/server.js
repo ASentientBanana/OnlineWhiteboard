@@ -7,18 +7,27 @@ let io = require('socket.io')(http);
 // });
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+
+  // console.log('a user connected');
+  
   socket.on("m",e=>{
     socket.broadcast.emit("m",e)
-    // socket.broadcast.emit("mb","")
-
-});
-socket.on("mb",e=>{
+  });
+  socket.on("mb",e=>{
     socket.broadcast.emit("mb","")
+  });
 
+
+  socket.on("chat-msg",msg=>{
+    socket.broadcast.emit("chat-msg",msg)
+  })
+
+  // end of connect
 });
-});
+
+
+
 
 http.listen(3000, () => {
   console.log('listening on *:3000');
-});
+})
