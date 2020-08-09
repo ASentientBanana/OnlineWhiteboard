@@ -44,13 +44,14 @@ window.addEventListener('load',()=>{
         drawing = true;
         draw(e);
     }
+
     const endPos = ()=>{
         drawing = false;
         ctx.beginPath();
         socket.emit('mb',"");
     }
 
-    const draw = (e)=>{
+    const draw = e =>{
         if(!drawing) return;
         ctx.lineWidth = 3;
         ctx.lineCap = 'round';
@@ -64,9 +65,11 @@ window.addEventListener('load',()=>{
         };
         socket.emit('m',data);
     }
+    
     socket.on("mb",e=>{
         ctx.beginPath();
     })
+
     socket.on("m",e=>{
         ctx.lineWidth = 3;
         ctx.lineCap = 'round';

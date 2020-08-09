@@ -1,0 +1,7 @@
+.whiteboard {
+  margin-top: 1vh;
+}
+
+.whiteboard canvas {
+  border: black solid 1px;
+}

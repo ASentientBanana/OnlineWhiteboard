@@ -1,0 +1,11 @@
+.chat-container {
+  border: black solid 1px;
+  border-top: none;
+  min-height: 25vw;
+}
+
+.chat-container .chat-header {
+  background-color: #4a4e69;
+  color: white;
+  margin-top: 0;
+}
