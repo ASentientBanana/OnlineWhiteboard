@@ -1,14 +1,12 @@
 let app = require('express')();
 let http = require('http').createServer(app);
 let io = require('socket.io')(http);
+const cors = require('cors');
 
-// app.get('/', (req, res) => {
-//   res.sendFile(__dirname + '/index.html');
-// });
-
+app.use(cors());
 io.on('connection', (socket) => {
 
-  // console.log('a user connected');
+  console.log('a user connected');
   
   socket.on("m",e=>{
     socket.broadcast.emit("m",e)
@@ -19,6 +17,7 @@ io.on('connection', (socket) => {
 
 
   socket.on("chat-msg",msg=>{
+    console.log(msg);
     socket.broadcast.emit("chat-msg",msg)
   })
 
@@ -26,8 +25,6 @@ io.on('connection', (socket) => {
 });
 
 
-
-
-http.listen(3000, () => {
-  console.log('listening on *:3000');
+http.listen(4000, () => {
+  console.log('listening on *:4000');
 })
