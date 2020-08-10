@@ -7,4 +7,15 @@
         color: white;
         margin-top: 0;
     }
+    .chat-body{
+        min-height: 60vh;
+        .msg{
+            border-bottom: solid 1px black;
+            min-height: 40px;
+            text-align: center;
+        }
+    }
+    .btn-large{
+        background-color:  #14213d;
+    }
 }

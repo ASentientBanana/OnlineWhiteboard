@@ -1,28 +1,32 @@
-import React, { useEffect, createRef, useContext } from "react";
+import React, { useEffect, createRef, useContext, useState } from "react";
 import "./whiteboard.css";
 import { Chatwindow } from "../chatwindow/chatwindow";
-import {ColorPalete} from '../colorPalete/colorPalete';
-import {ColorContext} from '../../contexts/colorContext';
+import { ColorPalete } from "../colorPalete/colorPalete";
+import { ColorContext } from "../../contexts/colorContext";
+import io from "socket.io-client";
 
+const socket = io("http://localhost:4000");
 
 export const Whiteboard = () => {
   const canvasRef = createRef<HTMLCanvasElement>();
   const whiteboardContainer = createRef<HTMLDivElement>();
-  const [color,serColor] = useContext(ColorContext);
-  let data;
+  const [color, setColor] = useContext(ColorContext);
   let drawing = false;
-
+  const [s,ss] = useState<any>();
   const setupCanvasSize = (canvasElem: HTMLCanvasElement) => {
-        const aspect = canvasElem.height / canvasElem.width,
-        width = window.innerWidth*0.6,
-        height = window.innerHeight;
-        canvasElem.width = width;
-        canvasElem.height = Math.round(width * aspect);
-    
+    const aspect = canvasElem.height / canvasElem.width,
+      width = window.innerWidth * 0.6,
+      height = window.innerHeight;
+    canvasElem.width = width;
+    canvasElem.height = Math.round(width * aspect);
   };
   useEffect(() => {
+    socket.on("m", (e: any) => {
+      drawFromServer(e);
+      
+      console.log(e);
+    });
 
-    
     window.addEventListener("resize", () => {
       if (canvasRef.current) {
         setupCanvasSize(canvasRef.current);
@@ -33,12 +37,11 @@ export const Whiteboard = () => {
     }
   }, []);
 
-  
   const startPos = (e: any) => {
     drawing = true;
     draw(e);
   };
-  
+
   const endPos = () => {
     drawing = false;
     if (canvasRef.current) {
@@ -48,12 +51,12 @@ export const Whiteboard = () => {
       }
     }
   };
-  
+
   const draw = (e: any) => {
     if (!drawing) return;
     const bound = canvasRef.current?.getBoundingClientRect();
-    if(bound?.left && bound?.top){
-      const offsetX = e.clientX - bound?.left; 
+    if (bound?.left && bound?.top) {
+      const offsetX = e.clientX - bound?.left;
       const offsetY = e.clientY - bound?.top;
       if (canvasRef.current) {
         const ctx = canvasRef.current.getContext("2d");
@@ -65,18 +68,46 @@ export const Whiteboard = () => {
           ctx.stroke();
           ctx.beginPath();
           ctx.moveTo(offsetX, offsetY);
-          data = {
-            x: offsetX,
-            y: offsetY,
+          const data = {
+            clientX: offsetX,
+            clientY: offsetY,
+            color: color,
+            lineWidth: ctx.lineWidth,
+            lineCap:ctx.lineCap = "round",
           };
-          // Ovde send :D
+          // Send the drawing data
+          socket.emit("m", data);
         }
       }
     }
   };
-  
-  window.addEventListener("mouseup",endPos);
-  
+
+  const drawFromServer = (e: any) => {
+    const bound = canvasRef.current?.getBoundingClientRect();
+    if (bound?.left && bound?.top) {
+      const offsetX = e.clientX - bound?.left;
+      const offsetY = e.clientY - bound?.top;
+      if (canvasRef.current) {
+        const ctx = canvasRef.current.getContext("2d");
+        if (ctx) {
+          ctx.lineWidth = e.lineWidth;
+          ctx.lineCap = e.lineCap
+          ctx.lineTo(offsetX, offsetY);
+          ctx.strokeStyle = e.color;
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(offsetX, offsetY);
+
+        }
+      }
+    }
+  };
+
+  window.addEventListener("mouseup", endPos);
+  const saveCanvas = (e:any)=>{
+    const tmp  = canvasRef.current?.toDataURL();
+    ss(tmp);
+  }
   return (
     <div ref={whiteboardContainer} className=" container center whiteboard">
       <canvas
@@ -85,9 +116,12 @@ export const Whiteboard = () => {
         onMouseUp={endPos}
         onMouseMove={draw}
       ></canvas>
-      <Chatwindow />
-      <ColorPalete />
-    
+      <div className='row'>
+        <a href={s} className='col s6'>downlaod</a>
+      <a className="waves-effect waves-light btn 'col s6'" onClick={saveCanvas}>button</a>
+      </div>
+      <Chatwindow  socket={socket}/>
+      {/* <ColorPalete /> */}
     </div>
   );
 };

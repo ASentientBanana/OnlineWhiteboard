@@ -5,7 +5,21 @@
 }
 
 .chat-container .chat-header {
-  background-color: #4a4e69;
+  background-color: #14213d;
   color: white;
   margin-top: 0;
+}
+
+.chat-container .chat-body {
+  min-height: 60vh;
+}
+
+.chat-container .chat-body .msg {
+  border-bottom: solid 1px black;
+  min-height: 40px;
+  text-align: center;
+}
+
+.chat-container .btn-large {
+  background-color: #14213d;
 }
