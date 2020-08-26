@@ -1,8 +1,11 @@
-.whiteboard{
-
-    margin-top:1vh;
-
-    canvas{
-        border:  black solid 1px;
-    }
+.whiteboard-container {
+  padding: 0 !important;
+  border: red solid 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  canvas {
+    border: black solid 1px;
+  }
 }

@@ -1,7 +1,18 @@
-.whiteboard {
-  margin-top: 1vh;
+.whiteboard-container {
+  padding: 0 !important;
+  border: red solid 1px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 90vh;
 }
 
-.whiteboard canvas {
+.whiteboard-container canvas {
   border: black solid 1px;
 }

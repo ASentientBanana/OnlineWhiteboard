@@ -1,7 +1,9 @@
 .chat-container {
   border: black solid 1px;
+  border-bottom: none;
   border-top: none;
-  min-height: 25vw;
+  height: 60vh;
+  position: relative;
 }
 
 .chat-container .chat-header {
@@ -11,7 +13,9 @@
 }
 
 .chat-container .chat-body {
-  min-height: 60vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 70%;
 }
 
 .chat-container .chat-body .msg {
@@ -20,6 +24,17 @@
   text-align: center;
 }
 
-.chat-container .btn-large {
+.chat-container .input-field {
+  bottom: 0;
+  position: absolute;
+}
+
+.chat-container .send-btn-container {
+  width: 100%;
+  border: solid 1px red;
+}
+
+.chat-container .send-btn-container .btn-large {
   background-color: #14213d;
+  width: 100%;
 }
