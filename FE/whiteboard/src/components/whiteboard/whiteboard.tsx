@@ -4,37 +4,24 @@ import "./whiteboard.css";
 import { ColorPalete } from "../colorPalete/colorPalete";
 import { ColorContext } from "../../contexts/colorContext";
 import { Link } from "react-router-dom";
-
+import whiteboardBuilder from '../../hooks/facadeWhiteboard'
 export const Whiteboard = ({ socket }: any) => {
   const canvasRef = createRef<HTMLCanvasElement>();
   const whiteboardContainer = createRef<HTMLDivElement>();
   const [color, setColor] = useContext(ColorContext);
   let drawing = false;
   const [s, ss] = useState<any>();
+  let mycanvas:any;
 
-  const setupCanvasSize = (canvasElem: HTMLCanvasElement) => {
-    if (whiteboardContainer.current) {
-      const aspect = canvasElem.height / canvasElem.width;
-
-      canvasElem.width = whiteboardContainer.current?.clientWidth;
-      canvasElem.height = whiteboardContainer.current?.clientHeight;
-    }
-  };
   useEffect(() => {
+    console.log(whiteboardContainer.current?.clientHeight,whiteboardContainer.current?.clientWidth);
+    
+    if(canvasRef.current) mycanvas = new whiteboardBuilder(canvasRef.current).setSize(whiteboardContainer.current?.clientHeight,whiteboardContainer.current?.clientWidth).build();
     socket.on("m", (e: any) => {
       drawFromServer(e);
 
       console.log(e);
     });
-
-    window.addEventListener("resize", () => {
-      if (canvasRef.current) {
-        setupCanvasSize(canvasRef.current);
-      }
-    });
-    if (canvasRef.current) {
-      setupCanvasSize(canvasRef.current);
-    }
   }, []);
 
   const startPos = (e: any) => {
@@ -58,29 +45,10 @@ export const Whiteboard = ({ socket }: any) => {
     if (bound?.left != null && bound?.top != null) {
       const offsetX = e.clientX - bound.left;
       const offsetY = e.clientY - bound.top;
-      if (canvasRef.current) {
-        const ctx = canvasRef.current.getContext("2d");
-        if (ctx) {
-          ctx.lineWidth = 3;
-          ctx.lineCap = "round";
-          ctx.strokeStyle = color;
-          ctx.lineTo(offsetX, offsetY);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(offsetX, offsetY);
-          const data = {
-            clientX: offsetX,
-            clientY: offsetY,
-            color: color,
-            lineWidth: ctx.lineWidth,
-            lineCap: ctx.lineCap = "round",
-          };
+      const data = mycanvas.clientDraw(offsetX,offsetY);
+          // const data = facadeWhiteboard(ctx,offsetX,offsetY,color) ;
           // Send the drawing data
           socket.emit("m", data);
-        }
-      }
-    } else {
-      console.log("ERR");
     }
   };
 
@@ -89,18 +57,8 @@ export const Whiteboard = ({ socket }: any) => {
     if (bound?.left != null && bound?.top != null) {
       const offsetX = e.clientX - bound?.left;
       const offsetY = e.clientY - bound?.top;
-      if (canvasRef.current) {
-        const ctx = canvasRef.current.getContext("2d");
-        if (ctx) {
-          ctx.lineWidth = e.lineWidth;
-          ctx.lineCap = e.lineCap;
-          ctx.lineTo(offsetX, offsetY);
-          ctx.strokeStyle = e.color;
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(offsetX, offsetY);
-        }
-      }
+      mycanvas.drawFromServer(offsetX,offsetY);
+      
     }
   };
 
