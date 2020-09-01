@@ -11,11 +11,9 @@ export const DrawingPage = ({socket,match}: any,) => {
   },[])
   return (
     <div className="row drawing-page-container">
-      <h1 className="center">{`${name}'s whiteboard`}</h1>
+      {/* <h1 className="center">{`${name}'s whiteboard`}</h1> */}
       <Whiteboard socket={socket} />
-      <div className="col s12 m6 l6">
         <Chatwindow socket={socket} />
-      </div>
     </div>
   );
 };

@@ -4,23 +4,23 @@ import "./whiteboard.css";
 import { ColorPalete } from "../colorPalete/colorPalete";
 import { ColorContext } from "../../contexts/colorContext";
 import { Link } from "react-router-dom";
-import whiteboardBuilder from '../../hooks/facadeWhiteboard'
+import whiteboardBuilder from "../../hooks/facadeWhiteboard";
 export const Whiteboard = ({ socket }: any) => {
   const canvasRef = createRef<HTMLCanvasElement>();
   const whiteboardContainer = createRef<HTMLDivElement>();
   const [color, setColor] = useContext(ColorContext);
   let drawing = false;
   const [s, ss] = useState<any>();
-  let mycanvas:any;
+  let mycanvas: any;
 
   useEffect(() => {
-    console.log(whiteboardContainer.current?.clientHeight,whiteboardContainer.current?.clientWidth);
-    
-    if(canvasRef.current) mycanvas = new whiteboardBuilder(canvasRef.current).setSize(whiteboardContainer.current?.clientHeight,whiteboardContainer.current?.clientWidth).build();
+    if (canvasRef.current && whiteboardContainer.current)
+      mycanvas = new whiteboardBuilder(canvasRef.current)
+        .withHeight(whiteboardContainer.current.clientHeight)
+        .withWidth(whiteboardContainer.current.clientWidth)
+        .build();
     socket.on("m", (e: any) => {
       drawFromServer(e);
-
-      console.log(e);
     });
   }, []);
 
@@ -33,32 +33,28 @@ export const Whiteboard = ({ socket }: any) => {
     drawing = false;
     if (canvasRef.current) {
       const ctx = canvasRef.current.getContext("2d");
-      if (ctx) {
-        ctx.beginPath();
-      }
+      if (ctx) ctx.beginPath();
     }
   };
 
-  const draw = (e: any) => {
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!drawing) return;
     const bound = canvasRef.current?.getBoundingClientRect();
     if (bound?.left != null && bound?.top != null) {
-      const offsetX = e.clientX - bound.left;
-      const offsetY = e.clientY - bound.top;
-      const data = mycanvas.clientDraw(offsetX,offsetY);
-          // const data = facadeWhiteboard(ctx,offsetX,offsetY,color) ;
-          // Send the drawing data
-          socket.emit("m", data);
+      const {scrollX,scrollY} = window;
+      const offsetX = e.clientX - bound.left - scrollX;
+      const offsetY = e.clientY - bound.top - scrollY;
+      const data = mycanvas.draw(offsetX, offsetY);
+      socket.emit("m", data);
     }
   };
 
   const drawFromServer = (e: any) => {
     const bound = canvasRef.current?.getBoundingClientRect();
     if (bound?.left != null && bound?.top != null) {
-      const offsetX = e.clientX - bound?.left;
-      const offsetY = e.clientY - bound?.top;
-      mycanvas.drawFromServer(offsetX,offsetY);
-      
+      const offsetX = e.clientX  ;
+      const offsetY = e.clientY ;
+      mycanvas.draw(offsetX, offsetY);
     }
   };
 
@@ -69,7 +65,7 @@ export const Whiteboard = ({ socket }: any) => {
   };
   return (
     <div
-      className="col s12 m6 l6 whiteboard-container"
+      className="col s12 m12 l12 whiteboard-container"
       ref={whiteboardContainer}
     >
       <canvas

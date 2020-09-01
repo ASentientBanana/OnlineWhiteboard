@@ -1,40 +1,87 @@
-.chat-container {
-  border: black solid 1px;
-  border-bottom: none;
-  border-top: none;
-  height: 60vh;
-  position: relative;
+#chat-container {
+  position: fixed;
+  display: none;
+  bottom: 150px;
+  right: 28px;
+  width: 280px;
 }
 
-.chat-container .chat-header {
+#chat-container .form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: #14213d;
+  border-radius: 1%;
+  -webkit-box-shadow: 15px 25px 10px 1px grey;
+          box-shadow: 15px 25px 10px 1px grey;
+  border-radius: 3%;
+}
+
+#chat-container .form-container .chat-header {
   background-color: #14213d;
   color: white;
   margin-top: 0;
 }
 
-.chat-container .chat-body {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  max-height: 70%;
+#chat-container .form-container .textarea-input {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #bdfbfd1f;
+  resize: none;
+  min-height: 50px;
+  color: white;
 }
 
-.chat-container .chat-body .msg {
-  border-bottom: solid 1px black;
-  min-height: 40px;
-  text-align: center;
+#chat-container .form-container .textarea-output {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background: #bdfbfd1f;
+  max-height: 30vh;
+  color: white;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  overflow: auto;
 }
 
-.chat-container .input-field {
+#chat-container .form-popup {
+  display: none;
+  position: fixed;
   bottom: 0;
-  position: absolute;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
 }
 
-.chat-container .send-btn-container {
-  width: 100%;
-  border: solid 1px red;
+#chat-container .cancel {
+  background-color: #900606;
 }
 
-.chat-container .send-btn-container .btn-large {
+#chat-container .send {
   background-color: #14213d;
-  width: 100%;
+  border: rgba(255, 255, 255, 0.226) 1px solid;
+}
+
+#chat-container .send:hover {
+  background-color: royalblue;
+}
+
+#chat-container .cancel:hover {
+  background-color: red;
+}
+
+.open-button {
+  color: white;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+  background-color: #14213d;
+}
+
+.open-button:hover {
+  background-color: royalblue;
 }

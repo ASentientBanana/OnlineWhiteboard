@@ -12,9 +12,9 @@ class whiteboard{
     }
   }
   
-  clientDraw(positionX:number,positionY:number,color:any,lineWidth:number = 2,lineCap:string = 'round'){
+  draw(positionX:number,positionY:number,color:any,lineWidth:number = 2,lineCap:string = 'round'){
       this.ctx.lineWidth = lineWidth;
-      this.ctx.lineCap = "round";
+      this.ctx.lineCap = lineCap;
       this.ctx.strokeStyle = color;
       this.ctx.lineTo(positionX, positionY);
       this.ctx.stroke();
@@ -25,26 +25,23 @@ class whiteboard{
           clientY: positionY,
           color: color,
           lineWidth: lineWidth,
-          lineCap: lineCap = "round",
+          lineCap: lineCap,
         }
   }
-    drawFromServer(positionX:number,positionY:number,color:any,lineWidth:number = 2,lineCap:string = 'round'){
-      this.ctx.lineWidth = lineWidth;
-      this.ctx.lineCap = "round";
-      this.ctx.strokeStyle = color;
-      this.ctx.lineTo(positionX, positionY);
-      this.ctx.stroke();
-      this.ctx.beginPath();
-      this.ctx.moveTo(positionX, positionY);
-  }
+
 }
 class whiteboardBuilder{
-  canvas:whiteboard;
+   canvas:whiteboard;
   constructor(canvas:HTMLCanvasElement){
     this.canvas = new whiteboard(canvas);
+    this.canvas.canvas.height =800;
+    this.canvas.canvas.width = 600;
   }
-  setSize(height:number =800,width:number = 600){
+  withHeight(height:number){
     this.canvas.canvas.height = height;
+    return this
+  }
+  withWidth(width:number){
     this.canvas.canvas.width = width;
     return this
   }
@@ -53,7 +50,13 @@ class whiteboardBuilder{
   }
 
 }
-    // canvasElem.width = whiteboardContainer.current?.clientWidth;
+    
+
+
+
+
+
+// canvasElem.width = whiteboardContainer.current?.clientWidth;
     // canvasElem.height = whiteboardContainer.current?.clientHeight;
     // const aspect = canvasElem.height / canvasElem.width;
 

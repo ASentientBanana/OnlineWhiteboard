@@ -16,9 +16,12 @@ function App() {
         <Navbar />
         <Switch>
         <ColorProvider>
-          <Route exact path="/" component={RegisterUser}></Route>
+          <Route exact path="/" >
+          <RegisterUser socket={socket}/>
+
+          </Route>
           <Route  path="/login">
-            <RegisterUser />
+            <RegisterUser socket={socket}/>
           </Route>
           <Route path="/draw/:name">
                 <DrawingPage socket={socket} />
