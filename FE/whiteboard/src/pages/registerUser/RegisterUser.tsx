@@ -27,17 +27,16 @@ export const RegisterUser = ({socket}:any) => {
             setRoomName(e.target.value);
           }}
         />
-        {/* <Link to={{
+        <Link to={{
           pathname:`/draw/${name}`,
-        }}> */}
+        }}>
           <button type="button" value="Register" onClick={ ()=>{
-            socket.emit('joinRoom',{name,roomName})
+            // socket.emit('joinRoom',{name,roomName})
             // console.log(socket);
-            
           }}>
             Register
           </button>
-        {/* </Link> */}
+        </Link>
       </form>
     </div>
   );

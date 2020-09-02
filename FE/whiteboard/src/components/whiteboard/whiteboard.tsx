@@ -40,10 +40,10 @@ export const Whiteboard = ({ socket }: any) => {
   const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!drawing) return;
     const bound = canvasRef.current?.getBoundingClientRect();
-    if (bound?.left != null && bound?.top != null) {
+    if (bound?.left != null && bound?.top != null && canvasRef.current) {
       const {scrollX,scrollY} = window;
-      const offsetX = e.clientX - bound.left - scrollX;
-      const offsetY = e.clientY - bound.top - scrollY;
+      const offsetX = e.clientX - canvasRef.current.offsetLeft+scrollX;
+      const offsetY = e.clientY - canvasRef.current.offsetTop + scrollY;
       const data = mycanvas.draw(offsetX, offsetY);
       socket.emit("m", data);
     }
@@ -51,9 +51,10 @@ export const Whiteboard = ({ socket }: any) => {
 
   const drawFromServer = (e: any) => {
     const bound = canvasRef.current?.getBoundingClientRect();
-    if (bound?.left != null && bound?.top != null) {
-      const offsetX = e.clientX  ;
-      const offsetY = e.clientY ;
+    if (bound?.left != null && bound?.top != null && canvasRef.current) {
+      const {scrollX,scrollY} = window;
+      const offsetX = e.clientX - canvasRef.current.offsetLeft+scrollX;
+      const offsetY = e.clientY - canvasRef.current.offsetTop + scrollY;
       mycanvas.draw(offsetX, offsetY);
     }
   };
