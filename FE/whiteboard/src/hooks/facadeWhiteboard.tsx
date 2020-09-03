@@ -37,6 +37,14 @@ class whiteboard{
       this.ctx.beginPath();
       this.ctx.moveTo(positionX, positionY);
   }
+  saveWhiteboard(imageFormat:string) {
+    const data = this.canvas.toDataURL(`image/${imageFormat}`);
+    const a = document.createElement('a');
+    a.href = data;
+    a.download = `canvas.${imageFormat}`;
+    a.click();
+  }
+
 }
 class whiteboardBuilder{
   canvas:whiteboard;
