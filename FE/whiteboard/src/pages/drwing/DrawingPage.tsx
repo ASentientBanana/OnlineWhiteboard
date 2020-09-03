@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { Whiteboard } from "../../components/whiteboard/whiteboard";
-import { Chatwindow } from "../../components/chatwindow/chatwindow";
-import { ColorPalete } from "../../components/colorPalete/colorPalete";
+import { Whiteboard } from "../../components/whiteboard/Whiteboard";
+import { Chatwindow } from "../../components/chatwindow/Chatwindow";
+import { ColorPalete } from "../../components/colorPalete/ColorPalete";
 import { useParams } from 'react-router-dom';
 import "./DrawingPage.css";
 import Tools from '../../components/tools/Tools'

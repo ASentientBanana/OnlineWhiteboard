@@ -1,8 +1,8 @@
 import React from "react";
 import "./App.css";
 import "materialize-css/dist/css/materialize.css";
-import { Navbar } from "./components/navbar/navbar";
-import { ColorProvider } from "./contexts/colorContext";
+import { Navbar } from "./components/navbar/Navbar";
+import { ColorProvider } from "./contexts/ColorContext";
 import { DrawingPage } from "./pages/drwing/DrawingPage";
 import { RegisterUser } from "./pages/registerUser/RegisterUser";
 import { BrowserRouter as Router, Route, Switch, useParams } from "react-router-dom";

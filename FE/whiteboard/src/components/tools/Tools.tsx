@@ -1,6 +1,6 @@
 import React , {useEffect,createRef} from 'react';
 import './Tools.css';
-import {ColorPalete}  from '../colorPalete/colorPalete';
+import {ColorPalete}  from '../colorPalete/ColorPalete';
 
 interface tools  {
     canvasCtx:CanvasRenderingContext2D;

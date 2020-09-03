@@ -1,6 +1,6 @@
 import React from 'react';
-import {Color} from './color';
-import './colorPalete.css';
+import {Color} from './Color';
+import './ColorPalete.css';
 
 
 

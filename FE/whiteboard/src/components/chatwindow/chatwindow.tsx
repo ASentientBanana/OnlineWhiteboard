@@ -4,7 +4,7 @@ import React, {
   createRef,
 } from "react";
 import ChatMessage from "./ChatMessage";
-import "./chatwindow.css";
+import "./Chatwindow.css";
 
 export const Chatwindow = ({ socket }: any) => {
   const [chatInputText, setChatInputText] = useState("");

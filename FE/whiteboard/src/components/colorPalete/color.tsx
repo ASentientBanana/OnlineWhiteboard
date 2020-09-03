@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import {ColorContext} from '../../contexts/colorContext';
+import {ColorContext} from '../../contexts/ColorContext';
 
 type ColorProps ={
     color:string

@@ -1,10 +1,10 @@
 import React, { useEffect, createRef, useContext, useState } from "react";
-import "./whiteboard.css";
+import "./Whiteboard.css";
 // import { Chatwindow } from "../chatwindow/chatwindow";
-import { ColorPalete } from "../colorPalete/colorPalete";
-import { ColorContext } from "../../contexts/colorContext";
+import { ColorPalete } from "../colorPalete/ColorPalete";
+import { ColorContext } from "../../contexts/ColorContext";
 import { Link } from "react-router-dom";
-import whiteboardBuilder ,{whiteboard}from "../../hooks/facadeWhiteboard";
+import whiteboardBuilder ,{whiteboard}from "../../hooks/FacadeWhiteboard";
 import Tools from '../tools/Tools'
 
 
