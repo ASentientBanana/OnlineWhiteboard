@@ -4,10 +4,30 @@ let io = require('socket.io')(http);
 const cors = require('cors');
 const Logger = require('./logger');
 
-
 app.use(cors());
+
+const rooms = {eee:'e'}
+
+
+app.get('/room',(req,res)=>{
+Object.keys(rooms).forEach(element => {
+});
+})
+
+app.post('/room',(req,res)=>{
+  console.log(req.body);
+  // if(rooms[req.body] != null ){
+  //   rooms[req.body] = {users:{}}
+  // }
+})
+// popravi ovo govno 
 io.on('connection', (socket) => {
   console.log(`CONNECTED ${socket.id}`);
+  socket.on('joinRoom',({name,roomName})=>{
+     const id = socket.id
+     socket.join(roomName)
+    console.log()
+  })
   socket.on("m",e=>{
     socket.broadcast.emit("m",e)
   });

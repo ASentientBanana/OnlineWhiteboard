@@ -1,8 +1,16 @@
 
-class whiteboard{
+interface drawingOptions{
+  color:any;
+  lineWidth:number;
+  lineCap:string
+}
+
+export class whiteboard{
+  
   ctx:any
   color:any
   canvas:HTMLCanvasElement;
+
   constructor(canvas:HTMLCanvasElement){
     this.canvas = canvas;
     if(canvas != null){
@@ -12,9 +20,9 @@ class whiteboard{
     }
   }
   
-  clientDraw(positionX:number,positionY:number,color:any,lineWidth:number = 2,lineCap:string = 'round'){
+  draw(positionX:number,positionY:number,{color="#000000",lineWidth = 50,lineCap = 'round'}:any){
       this.ctx.lineWidth = lineWidth;
-      this.ctx.lineCap = "round";
+      this.ctx.lineCap = lineCap;
       this.ctx.strokeStyle = color;
       this.ctx.lineTo(positionX, positionY);
       this.ctx.stroke();
@@ -25,17 +33,24 @@ class whiteboard{
           clientY: positionY,
           color: color,
           lineWidth: lineWidth,
-          lineCap: lineCap = "round",
+          lineCap: lineCap,
         }
   }
-    drawFromServer(positionX:number,positionY:number,color:any,lineWidth:number = 2,lineCap:string = 'round'){
-      this.ctx.lineWidth = lineWidth;
-      this.ctx.lineCap = "round";
-      this.ctx.strokeStyle = color;
-      this.ctx.lineTo(positionX, positionY);
-      this.ctx.stroke();
-      this.ctx.beginPath();
-      this.ctx.moveTo(positionX, positionY);
+
+  // readTheFile(file:any) {
+  //   const reader = new FileReader();
+  //   return new Promise((resolve) => {
+  //     reader.onload = (event) => {
+  //       resolve(event.target.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   })
+  // }
+  drawDots(positionX:number,positionY:number,color:any,) {
+    
+    this.ctx.fillStyle = 'green';
+    this.ctx.fillRect(positionX, positionY, 2, 2);
+    
   }
   saveWhiteboard(imageFormat:string) {
     const data = this.canvas.toDataURL(`image/${imageFormat}`);
@@ -47,12 +62,17 @@ class whiteboard{
 
 }
 class whiteboardBuilder{
-  canvas:whiteboard;
+   canvas:whiteboard;
   constructor(canvas:HTMLCanvasElement){
     this.canvas = new whiteboard(canvas);
+    this.canvas.canvas.height =800;
+    this.canvas.canvas.width = 600;
   }
-  setSize(height:number =800,width:number = 600){
+  withHeight(height:number){
     this.canvas.canvas.height = height;
+    return this
+  }
+  withWidth(width:number){
     this.canvas.canvas.width = width;
     return this
   }
@@ -61,27 +81,4 @@ class whiteboardBuilder{
   }
 
 }
-    // canvasElem.width = whiteboardContainer.current?.clientWidth;
-    // canvasElem.height = whiteboardContainer.current?.clientHeight;
-    // const aspect = canvasElem.height / canvasElem.width;
-
-
-
-
-// const facadeWhiteboard = (ctx:CanvasRenderingContext2D,positionX:number,positionY:number,color:any,lineWidth:number = 2,lineCap:string = 'round') => {
-//     ctx.lineWidth = lineWidth;
-//     ctx.lineCap = "round";
-//     ctx.strokeStyle = color;
-//     ctx.lineTo(positionX, positionY);
-//     ctx.stroke();
-//     ctx.beginPath();
-//     ctx.moveTo(positionX, positionY);
-//     return{
-//         clientX: positionX,
-//         clientY: positionY,
-//         color: color,
-//         lineWidth: lineWidth,
-//         lineCap: lineCap = "round",
-//       }
-// } 
- export default whiteboardBuilder;
+export default whiteboardBuilder;

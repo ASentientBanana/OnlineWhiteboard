@@ -8,6 +8,7 @@ export const Color = ({color}:ColorProps)=>{
     const [currColor,setCurrColor] = useContext(ColorContext); 
     const changeColor = () =>{
         setCurrColor(color);
+        console.log(color);
     }
 
     return(

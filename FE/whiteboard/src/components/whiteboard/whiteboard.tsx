@@ -4,80 +4,92 @@ import "./whiteboard.css";
 import { ColorPalete } from "../colorPalete/colorPalete";
 import { ColorContext } from "../../contexts/colorContext";
 import { Link } from "react-router-dom";
-import whiteboardBuilder from '../../hooks/facadeWhiteboard'
+import whiteboardBuilder ,{whiteboard}from "../../hooks/facadeWhiteboard";
+import Tools from '../tools/Tools'
+
+
 export const Whiteboard = ({ socket }: any) => {
+
   const canvasRef = createRef<HTMLCanvasElement>();
   const whiteboardContainer = createRef<HTMLDivElement>();
   const [color, setColor] = useContext(ColorContext);
+  const [lineWidth,setLineWidth] = useState(1);
+  const [myCanvas,setMyCanvas] = useState<whiteboard>(
+    );
   let drawing = false;
-  const [s, ss] = useState<any>();
-  let mycanvas:any;
-
+let tmp:whiteboard;
   useEffect(() => {
-    console.log(whiteboardContainer.current?.clientHeight,whiteboardContainer.current?.clientWidth);
-    
-    if(canvasRef.current) mycanvas = new whiteboardBuilder(canvasRef.current).setSize(whiteboardContainer.current?.clientHeight,whiteboardContainer.current?.clientWidth).build();
+    if (canvasRef.current && whiteboardContainer.current)
+     tmp = new whiteboardBuilder(canvasRef.current)
+    .withHeight(whiteboardContainer.current.clientHeight)
+    .withWidth(whiteboardContainer.current.clientWidth)
+    .build()
+    setMyCanvas(tmp);
     socket.on("m", (e: any) => {
-      drawFromServer(e);
-
-      console.log(e);
+      draw(e,false);
     });
   }, []);
 
   const startPos = (e: any) => {
     drawing = true;
-    draw(e);
+    draw(e,true);
   };
 
   const endPos = () => {
     drawing = false;
     if (canvasRef.current) {
       const ctx = canvasRef.current.getContext("2d");
-      if (ctx) {
-        ctx.beginPath();
-      }
+      if (ctx) ctx.beginPath();
     }
   };
 
-  const draw = (e: any) => {
-    if (!drawing) return;
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>,isLocal:boolean) => {
+    if (!drawing && isLocal) return;
     const bound = canvasRef.current?.getBoundingClientRect();
-    if (bound?.left != null && bound?.top != null) {
-      const offsetX = e.clientX - bound.left;
-      const offsetY = e.clientY - bound.top;
-      const data = mycanvas.clientDraw(offsetX,offsetY);
-          // const data = facadeWhiteboard(ctx,offsetX,offsetY,color) ;
-          // Send the drawing data
-          socket.emit("m", data);
+    if (bound?.left != null && bound?.top != null && canvasRef.current && myCanvas) {
+      const { scrollX, scrollY } = window;
+      const offsetX = e.clientX - canvasRef.current.offsetLeft + scrollX;
+      const offsetY = e.clientY - canvasRef.current.offsetTop + scrollY;
+      const data = myCanvas.draw(offsetX, offsetY, {color,lineWidth});
+      if(isLocal) socket.emit("m", data);
     }
   };
 
+  const clearCanvas = () => {
+  if(canvasRef.current) canvasRef.current.getContext('2d')!.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)    
+  }
+  const brushSizeSet = (e:any) =>{
+    setLineWidth(e)
+  } 
   const drawFromServer = (e: any) => {
     const bound = canvasRef.current?.getBoundingClientRect();
-    if (bound?.left != null && bound?.top != null) {
-      const offsetX = e.clientX - bound?.left;
-      const offsetY = e.clientY - bound?.top;
-      mycanvas.drawFromServer(offsetX,offsetY);
-      
+      if (bound?.left != null && bound?.top  && canvasRef.current && myCanvas) {
+      const {scrollX,scrollY} = window;
+      const offsetX = e.clientX - canvasRef.current.offsetLeft+scrollX;
+      const offsetY = e.clientY - canvasRef.current.offsetTop + scrollY;
+       myCanvas.draw(offsetX, offsetY, {color,lineWidth});
     }
   };
 
-  window.addEventListener("mouseup", endPos);
-  const saveCanvas = (e: any) => {
-    const tmp = canvasRef.current?.toDataURL();
-    ss(tmp);
-  };
+  // window.addEventListener("mousemove", draw);
+
   return (
-    <div
-      className="col s12 m6 l6 whiteboard-container"
-      ref={whiteboardContainer}
-    >
-      <canvas
-        ref={canvasRef}
-        onMouseDown={startPos}
-        onMouseUp={endPos}
-        onMouseMove={draw}
-      ></canvas>
+    <div>
+
+      <div
+        className="col s12 m12 l12 whiteboard-container"
+        ref={whiteboardContainer}
+      >
+        <canvas
+          ref={canvasRef}
+          onMouseDown={startPos}
+          onMouseUp={endPos}
+          onMouseMove={e=>{
+            draw(e,true)
+          }}
+        ></canvas>
+      </div>
+      <Tools canvasContext={clearCanvas} brushSize={brushSizeSet}/>
     </div>
   );
 };

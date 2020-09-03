@@ -1,0 +1,11 @@
+.tool-container {
+  padding-top: 92vh;
+}
+
+.tool-container .clear-btn {
+  background-color: #14213d;
+}
+
+.tool-container .clear-btn:hover {
+  background-color: royalblue;
+}

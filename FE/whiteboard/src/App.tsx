@@ -9,23 +9,24 @@ import { BrowserRouter as Router, Route, Switch, useParams } from "react-router-
 import io from "socket.io-client";
 const socket = io("http://localhost:4001");
 function App() {
-  // const {name} = useParams();
   return (
     <div className="App">
-      <Router>
-        <Navbar />
-        <Switch>
-        <ColorProvider>
-          <Route exact path="/" component={RegisterUser}></Route>
-          <Route  path="/login">
-            <RegisterUser />
-          </Route>
-          <Route path="/draw/:name">
-                <DrawingPage socket={socket} />
-          </Route>
-        </ColorProvider>
-        </Switch>
-      </Router>
+      <ColorProvider>
+        <Router>
+          <Navbar />
+          <Switch>
+            <Route exact path="/" >
+              <RegisterUser socket={socket} />
+            </Route>
+            <Route path="/login">
+              <RegisterUser socket={socket} />
+            </Route>
+            <Route path="/draw/:name">
+              <DrawingPage socket={socket} />
+            </Route>
+          </Switch>
+        </Router>
+      </ColorProvider>
     </div>
   );
 }
