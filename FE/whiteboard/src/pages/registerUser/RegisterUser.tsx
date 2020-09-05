@@ -34,7 +34,13 @@ export const RegisterUser = ({socket}:any) => {
             // socket.emit('joinRoom',{name,roomName})
             // console.log(socket);
           }}>
-            Register
+            Join Room
+          </button>
+          <button type="button" value="Register" onClick={ ()=>{
+            // socket.emit('joinRoom',{name,roomName})
+            // console.log(socket);
+          }}>
+            Register Room
           </button>
         </Link>
       </form>

@@ -1,7 +1,8 @@
+@import './../../assets/Colors.scss';
 nav {
   // border-bottom: solid black 2px;
   text-align: center;
-  background-color: #14213d;
+  background-color: $main-dark;
   font-size: 2em;
 
 }

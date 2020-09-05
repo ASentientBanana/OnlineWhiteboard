@@ -1,11 +1,12 @@
 .whiteboard-container {
   padding: 0 !important;
-  border: red solid 1px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: 600px;
+  width: 800px;
   canvas {
     border: black solid 1px;
+    background-color: white;
   }
 }

@@ -1,11 +1,19 @@
 .tool-container {
-  padding-top: 92vh;
+  padding-top: 10vh;
+  max-width: 600px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+  -webkit-column-gap: 1em;
+          column-gap: 1em;
 }
 
 .tool-container .clear-btn {
-  background-color: #14213d;
+  background-color: #5885AF;
+  width: 100% !important;
 }
 
 .tool-container .clear-btn:hover {
-  background-color: royalblue;
+  background-color: #41729F;
 }

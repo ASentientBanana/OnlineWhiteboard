@@ -1,0 +1,108 @@
+@import "./../../assets/Colors.scss";
+#chat-container {
+  position: fixed;
+  display: none;
+  bottom: 150px;
+  right: 28px;
+  width: 280px;
+  z-index: 1000;
+  .form-container {
+    max-width: 300px;
+    padding: 10px;
+    border: $main-dark solid 2px;
+    background-color: $main-dark;
+    border-radius: 1%;
+    box-shadow: 15px 25px 10px 1px rgba(0, 0, 0, 0.431);
+    border-radius: 3%;
+    .chat-header {
+      background-color: $main-dark;
+      color: white;
+      margin-top: 0;
+    }
+    .textarea-input {
+      width: 100%;
+      padding: 15px;
+      margin: 5px 0 22px 0;
+      border: none ;
+      background: rgba(218, 218, 218, 0.829);
+      resize: none;
+      min-height: 50px;
+      // color: white;
+    }
+    .textarea-output {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      // background: #bdfbfd1f;
+      background: rgba(218, 218, 218, 0.829);
+      max-height: 30vh;
+      color: white;
+      box-sizing: border-box;
+      overflow: auto;
+      min-height: 20vh;
+    }
+    .chat-message {
+      background-color: $main;
+      display: grid;
+      grid-template-columns: 1fr 4fr;
+      border-radius: 3% !important;
+      padding: 5px;
+      border-bottom: solid $main-light 1px;
+      img {
+        border-radius: 50%;
+        height: 40px;
+      }
+      span {
+        color: teal;
+      }
+      p {
+        text-align: justify;
+        padding-left: 5px;
+        height: 100%;
+      }
+    }
+  }
+
+  .form-popup {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 15px;
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+  }
+  .btn-container {
+    display: flex;
+    justify-content: space-around;
+    .cancel {
+      background-color: rgb(144, 6, 6);
+      border-radius: 8%;
+    }
+    .send {
+      background-color: $main;
+      border: rgba(255, 255, 255, 0.226) 1px solid;
+      border-radius: 8%;
+    }
+    .send:hover {
+      background-color: $main-light;
+    }
+    .cancel:hover {
+      background-color: red;
+    }
+  }
+}
+
+.open-button {
+  color: white;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+  background-color: $main;
+}
+
+.open-button:hover {
+  background-color: $main-light;
+}

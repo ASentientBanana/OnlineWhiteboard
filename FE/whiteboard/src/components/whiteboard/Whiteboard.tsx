@@ -4,7 +4,7 @@ import "./Whiteboard.css";
 import { ColorPalete } from "../colorPalete/ColorPalete";
 import { ColorContext } from "../../contexts/ColorContext";
 import { Link } from "react-router-dom";
-import whiteboardBuilder ,{whiteboard}from "../../hooks/FacadeWhiteboard";
+import whiteboardBuilder ,{whiteboard}from "../../hooks/facadeWhiteboard";
 import Tools from '../tools/Tools'
 
 
@@ -25,10 +25,9 @@ let tmp:whiteboard;
     .withWidth(whiteboardContainer.current.clientWidth)
     .build()
     setMyCanvas(tmp);
-    socket.on("m", (e: any) => {
-      draw(e,false);
-    });
+
   }, []);
+  
 
   const startPos = (e: any) => {
     drawing = true;
@@ -46,32 +45,29 @@ let tmp:whiteboard;
   const draw = (e: React.MouseEvent<HTMLCanvasElement>,isLocal:boolean) => {
     if (!drawing && isLocal) return;
     const bound = canvasRef.current?.getBoundingClientRect();
-    if (bound?.left != null && bound?.top != null && canvasRef.current && myCanvas) {
+    if (bound?.left  && bound?.top && canvasRef.current && myCanvas) {
+      if(isLocal){
       const { scrollX, scrollY } = window;
       const offsetX = e.clientX - canvasRef.current.offsetLeft + scrollX;
       const offsetY = e.clientY - canvasRef.current.offsetTop + scrollY;
       const data = myCanvas.draw(offsetX, offsetY, {color,lineWidth});
-      if(isLocal) socket.emit("m", data);
+      socket.emit("m", data);
+      }else{
+      myCanvas.draw(e.clientX, e.clientY, e);
+      }
     }
   };
-
+  socket.on("m", (e: any) => {
+    draw(e,false);
+    // drawFromServer(e);
+    
+})
   const clearCanvas = () => {
   if(canvasRef.current) canvasRef.current.getContext('2d')!.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)    
   }
   const brushSizeSet = (e:any) =>{
     setLineWidth(e)
   } 
-  const drawFromServer = (e: any) => {
-    const bound = canvasRef.current?.getBoundingClientRect();
-      if (bound?.left != null && bound?.top  && canvasRef.current && myCanvas) {
-      const {scrollX,scrollY} = window;
-      const offsetX = e.clientX - canvasRef.current.offsetLeft+scrollX;
-      const offsetY = e.clientY - canvasRef.current.offsetTop + scrollY;
-       myCanvas.draw(offsetX, offsetY, {color,lineWidth});
-    }
-  };
-
-  // window.addEventListener("mousemove", draw);
 
   return (
     <div>

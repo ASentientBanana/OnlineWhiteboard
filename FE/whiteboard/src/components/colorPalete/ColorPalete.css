@@ -1,7 +1,6 @@
 .color-palete-container {
   padding: 0 !important;
-  width: 80px;
-  border: solid 1px black;
+  width: 100% !important;
   top: 15vh;
   left: 30px;
   display: -ms-grid;
@@ -13,4 +12,6 @@
 .color-palete-container .color-box {
   height: 40px;
   cursor: pointer;
+  border-radius: 10%;
+  border: solid grey 1px;
 }

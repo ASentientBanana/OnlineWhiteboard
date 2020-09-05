@@ -12,8 +12,8 @@ export const DrawingPage = ({ socket }: any,) => {
   useEffect(() => {
   }, [])
   return (
-    <div className="row drawing-page-container">
-      <h1 className="center">{`${name}'s whiteboard`}</h1>
+    <div className="container center drawing-page-container">
+      {/* <h1 className="center">{`${name}'s whiteboard`}</h1> */}
       <Whiteboard socket={socket} />
       <Chatwindow socket={socket} />
     </div>

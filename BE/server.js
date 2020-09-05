@@ -23,13 +23,14 @@ app.post('/room',(req,res)=>{
 // popravi ovo govno 
 io.on('connection', (socket) => {
   console.log(`CONNECTED ${socket.id}`);
-  socket.on('joinRoom',({name,roomName})=>{
-     const id = socket.id
-     socket.join(roomName)
-    console.log()
-  })
+  // socket.on('joinRoom',({name,roomName})=>{
+  //    const id = socket.id
+  //    socket.join(roomName)
+  //   console.log()
+  // })
   socket.on("m",e=>{
     socket.broadcast.emit("m",e)
+    console.log("e");
   });
   socket.on("mb",e=>{
     socket.broadcast.emit("mb","")

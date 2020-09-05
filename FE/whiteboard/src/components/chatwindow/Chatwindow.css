@@ -4,20 +4,22 @@
   bottom: 150px;
   right: 28px;
   width: 280px;
+  z-index: 1000;
 }
 
 #chat-container .form-container {
   max-width: 300px;
   padding: 10px;
-  background-color: #14213d;
+  border: #092338 solid 2px;
+  background-color: #092338;
   border-radius: 1%;
-  -webkit-box-shadow: 15px 25px 10px 1px grey;
-          box-shadow: 15px 25px 10px 1px grey;
+  -webkit-box-shadow: 15px 25px 10px 1px rgba(0, 0, 0, 0.431);
+          box-shadow: 15px 25px 10px 1px rgba(0, 0, 0, 0.431);
   border-radius: 3%;
 }
 
 #chat-container .form-container .chat-header {
-  background-color: #14213d;
+  background-color: #092338;
   color: white;
   margin-top: 0;
 }
@@ -27,23 +29,48 @@
   padding: 15px;
   margin: 5px 0 22px 0;
   border: none;
-  background: #bdfbfd1f;
+  background: rgba(218, 218, 218, 0.829);
   resize: none;
   min-height: 50px;
-  color: white;
 }
 
 #chat-container .form-container .textarea-output {
   width: 100%;
   padding: 15px;
   border: none;
-  background: #bdfbfd1f;
+  background: rgba(218, 218, 218, 0.829);
   max-height: 30vh;
   color: white;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   overflow: auto;
   min-height: 20vh;
+}
+
+#chat-container .form-container .chat-message {
+  background-color: #274472;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 4fr;
+      grid-template-columns: 1fr 4fr;
+  border-radius: 3% !important;
+  padding: 5px;
+  border-bottom: solid #41729F 1px;
+}
+
+#chat-container .form-container .chat-message img {
+  border-radius: 50%;
+  height: 40px;
+}
+
+#chat-container .form-container .chat-message span {
+  color: teal;
+}
+
+#chat-container .form-container .chat-message p {
+  text-align: justify;
+  padding-left: 5px;
+  height: 100%;
 }
 
 #chat-container .form-popup {
@@ -65,15 +92,17 @@
 
 #chat-container .btn-container .cancel {
   background-color: #900606;
+  border-radius: 8%;
 }
 
 #chat-container .btn-container .send {
-  background-color: #14213d;
+  background-color: #274472;
   border: rgba(255, 255, 255, 0.226) 1px solid;
+  border-radius: 8%;
 }
 
 #chat-container .btn-container .send:hover {
-  background-color: royalblue;
+  background-color: #41729F;
 }
 
 #chat-container .btn-container .cancel:hover {
@@ -88,9 +117,9 @@
   bottom: 23px;
   right: 28px;
   width: 280px;
-  background-color: #14213d;
+  background-color: #274472;
 }
 
 .open-button:hover {
-  background-color: royalblue;
+  background-color: #41729F;
 }

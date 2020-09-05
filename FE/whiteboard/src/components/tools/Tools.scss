@@ -1,9 +1,17 @@
+@import './../../assets//Colors.scss';
 .tool-container{
-    padding-top:92vh ;
+    padding-top:10vh ;
+    // position: relative;
+
+    max-width: 600px;
+    display: grid;
+    grid-template-columns:1fr 1fr;
+    column-gap: 1em;
     .clear-btn{
-        background-color: #14213d;
+        background-color: $main-faded;
+        width: 100% !important;  
     }
-    .clear-btn:hover  {
-        background-color: royalblue;
+    .clear-btn:hover  { 
+        background-color: $main-light;
       }
 }

@@ -72,7 +72,6 @@ export const Chatwindow = ({ socket }: any) => {
             placeholder="Type message.."
             rows={2}
             name="msg-in"
-            required
             className="textarea-input"
             ref={inputRef}
             onChange={chatInputHandle}

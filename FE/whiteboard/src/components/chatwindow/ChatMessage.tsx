@@ -6,8 +6,8 @@ interface message {
 }
 const ChatMessage = ({ body, time, name }: message) => {
   return (
-    <div className="">
-      <img src="/w3images/avatar_g2.jpg" alt={name} className="right" />
+    <div className="chat-message">
+      <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgenslerzudansdentistry.com%2Fwp-content%2Fuploads%2F2015%2F11%2Fanonymous-user.png&f=1&nofb=1" alt={name} className="right" />
       <p className="center-align">{body}</p>
       <span className="time-left">{time}</span>
     </div>
