@@ -10,10 +10,24 @@
 }
 
 .tool-container .clear-btn {
-  background-color: #5885AF;
+  background-color: #580838;
   width: 100% !important;
 }
 
 .tool-container .clear-btn:hover {
-  background-color: #41729F;
+  background-color: #8a5273;
+}
+
+.tool-container .buttons-container {
+  width: 100%;
+}
+
+.tool-container .buttons-container a {
+  width: 50%;
+  background-color: #580838;
+}
+
+.tool-container #brush-size-slider {
+  border: none;
+  color: #580838;
 }

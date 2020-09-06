@@ -7,7 +7,7 @@ import { DrawingPage } from "./pages/drwing/DrawingPage";
 import { RegisterUser } from "./pages/registerUser/RegisterUser";
 import { BrowserRouter as Router, Route, Switch, useParams } from "react-router-dom";
 import io from "socket.io-client";
-const socket = io("http://localhost:4001");
+const socket = io("http://localhost:4002");
 function App() {
   return (
     <div className="App">

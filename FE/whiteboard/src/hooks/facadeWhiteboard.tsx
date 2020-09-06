@@ -7,8 +7,8 @@ interface drawingOptions{
 
 export class whiteboard{
   
-  ctx:any
-  color:any
+  ctx:any;
+  color:any;
   canvas:HTMLCanvasElement;
 
   constructor(canvas:HTMLCanvasElement){
@@ -53,10 +53,10 @@ export class whiteboard{
     
   }
   saveWhiteboard(imageFormat:string) {
-    const data = this.canvas.toDataURL(`image/${imageFormat}`);
+    const data = this.canvas.toDataURL('image/jpeg', 1.0);
     const a = document.createElement('a');
     a.href = data;
-    a.download = `canvas.${imageFormat}`;
+    a.download = `canvas.jpg`;
     a.click();
   }
 

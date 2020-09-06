@@ -1,17 +1,27 @@
-@import './../../assets//Colors.scss';
-.tool-container{
-    padding-top:10vh ;
-    // position: relative;
-
-    max-width: 600px;
-    display: grid;
-    grid-template-columns:1fr 1fr;
-    column-gap: 1em;
-    .clear-btn{
+@import "./../../assets//Colors.scss";
+.tool-container {
+  padding-top: 10vh;
+  max-width: 600px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 1em;
+  .clear-btn {
+    background-color: $main-faded;
+    width: 100% !important;
+  }
+  .clear-btn:hover {
+    background-color: $main-light;
+  }
+  .buttons-container{
+    width: 100%;
+    a{
+        width: 50%;
         background-color: $main-faded;
-        width: 100% !important;  
     }
-    .clear-btn:hover  { 
-        background-color: $main-light;
-      }
+  }
+  #brush-size-slider {
+      border: none;
+      color: $main-dark
+      ;
+  }
 }

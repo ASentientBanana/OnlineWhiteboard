@@ -31,7 +31,7 @@ export const RegisterUser = ({socket}:any) => {
           pathname:`/draw/${name}`,
         }}>
           <button type="button" value="Register" onClick={ ()=>{
-            // socket.emit('joinRoom',{name,roomName})
+            socket.emit('join_room',roomName)
             // console.log(socket);
           }}>
             Join Room

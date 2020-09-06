@@ -10,6 +10,10 @@ import Tools from '../../components/tools/Tools'
 export const DrawingPage = ({ socket }: any,) => {
   const { name } = useParams()
   useEffect(() => {
+    socket.on('test',(e:any)=>{
+      console.log(e);
+      
+    })
   }, [])
   return (
     <div className="container center drawing-page-container">
