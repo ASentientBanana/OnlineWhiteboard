@@ -13,8 +13,8 @@ export const Chatwindow = ({ socket }: any) => {
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    socket.on("chat-msg", (msg: any) => {
-      console.log(msg + "ddddd");
+    socket.on("chat-message", (msg: any) => {
+      console.log(msg);
       appendMessages(msg);
     });
   }, [messages]);
@@ -29,10 +29,8 @@ export const Chatwindow = ({ socket }: any) => {
   };
   const sendChatMsg = (e: any) => {
     e.preventDefault();
-
     if (chatInputText) {
-      socket.emit("chat-msg", chatInputText);
-      appendMessages(chatInputText);
+      socket.emit("chat-message", chatInputText);
       setChatInputText("");
 
       if (inputRef.current) {

@@ -47,8 +47,6 @@ export const Whiteboard = ({ socket }: any) => {
   };
   socket.on("draw", (e: any) => {
     draw(e, false);
-    console.log(e);
-    
   });
   const clearCanvas = () =>
     myCanvas?.ctx.clearRect(
@@ -72,7 +70,7 @@ export const Whiteboard = ({ socket }: any) => {
   };
 
   const saveCanvas = ()=>{
-    myCanvas?.saveWhiteboard('jpg')
+    const b = myCanvas?.saveWhiteboard('jpg')
   }
 
   return (
@@ -85,7 +83,7 @@ export const Whiteboard = ({ socket }: any) => {
           ref={canvasRef}
           onMouseDown={startPos}
           onMouseUp={endPos}
-          onMouseMove={(e) => {
+          onMouseMove={e => {
             draw(e, true);
           }}
         ></canvas>
@@ -96,6 +94,8 @@ export const Whiteboard = ({ socket }: any) => {
         paintCanvas={paintCanvas}
         saveCanvas={saveCanvas}
       />
+      <div>
+      </div>
     </div>
   );
 };

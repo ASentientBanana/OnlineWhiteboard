@@ -54,10 +54,12 @@ export class whiteboard{
   }
   saveWhiteboard(imageFormat:string) {
     const data = this.canvas.toDataURL('image/jpeg', 1.0);
+    console.log(data);
     const a = document.createElement('a');
     a.href = data;
     a.download = `canvas.jpg`;
     a.click();
+    return data
   }
 
 }
