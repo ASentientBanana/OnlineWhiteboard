@@ -4,7 +4,6 @@ import { Chatwindow } from "../../components/chatwindow/Chatwindow";
 import { ColorPalete } from "../../components/colorPalete/ColorPalete";
 import { useParams } from 'react-router-dom';
 import "./DrawingPage.css";
-import Tools from '../../components/tools/Tools'
 
 
 export const DrawingPage = ({ socket }: any,) => {

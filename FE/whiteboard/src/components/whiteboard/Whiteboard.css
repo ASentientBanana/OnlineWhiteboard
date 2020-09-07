@@ -14,7 +14,9 @@
 }
 
 .whiteboard-container canvas {
-  border: black solid 1px;
-  background-color: white;
+  border: #f0a2a2 solid 20px;
+  border-image-repeat: space;
+  background-color: #d8c1c1;
+  border-radius: 10%;
   cursor: crosshair;
 }

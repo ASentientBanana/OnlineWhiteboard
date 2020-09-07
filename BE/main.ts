@@ -24,12 +24,11 @@ app.use(express.json());
 
 
 //test
-db.authenticate().then(()=>{
-  console.log('db connected')
-}).catch((e:any)=>{
-  console.log(e);
-  
-})
+// db.authenticate().then(()=>{
+//   console.log('db connected')
+// }).catch((e:any)=>{
+//   console.log(e);
+// })
 
 const rooms:any = {}
 io.on('connection', (socket:any) => {
