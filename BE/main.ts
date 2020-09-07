@@ -22,7 +22,7 @@ app.use(cors());
 app.use(express.json());
 
 
- 
+
 //test
 db.authenticate().then(()=>{
   console.log('db connected')
