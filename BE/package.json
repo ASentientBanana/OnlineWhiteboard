@@ -4,9 +4,14 @@
   "main": "main.ts",
   "license": "MIT",
   "dependencies": {
+    "@types/pg": "^7.14.4",
+    "@types/sequelize": "^4.28.9",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "http": "^0.0.1-security",
+    "pg": "^8.3.3",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.5",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
