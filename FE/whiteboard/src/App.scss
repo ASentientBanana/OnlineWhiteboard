@@ -5,3 +5,11 @@ body{
     background-image: url("./assets/images/SARAA.jpg");
     // background-repeat:repeat;
 }
+
+@font-face {
+    font-family: acme-regular;
+    src: url('./assets/fonts/Acme-Regular.ttf');
+}
+*{
+    font-family: acme-regular;
+}

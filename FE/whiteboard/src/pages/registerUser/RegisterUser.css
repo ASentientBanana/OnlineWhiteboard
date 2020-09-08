@@ -1,0 +1,12 @@
+.register-user-page-container h1 {
+  color: #69071f;
+  font-size: 10em;
+}
+
+.register-user-page-container label {
+  color: #580838;
+}
+
+.register-user-page-container input {
+  color: #580838;
+}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import './RegisterUser.css'
 export const RegisterUser = ({socket}:any) => {
   const [name, setName] = useState<string>("Jane Doe");
   const [roomName, setRoomName] = useState<string>("Jane Doe");
@@ -8,8 +8,8 @@ export const RegisterUser = ({socket}:any) => {
   const submit = () => {};
 
   return (
-    <div className="container center">
-      <h1>Welcome</h1>
+    <div className="container center register-user-page-container">
+      <h1>whiteboard</h1>
       <form action='/room' method='POST' >
         <label htmlFor="username"><h4>Enter user name</h4></label>
         <input
