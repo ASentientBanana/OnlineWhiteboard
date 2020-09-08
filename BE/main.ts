@@ -51,7 +51,6 @@ const roomHandlerFacade = (socket:any,room_name:string)=>{
   if(!rooms.hasOwnProperty(room_name)){
     rooms[room_name] = socket.id
     socket.emit('isOwner',200)
-    rooms.owners[socket.id]= room_name;
   }else{
     if(rooms.hasOwnProperty(`${room_name}_list`)){
       rooms[`${room_name}_list`] = [...rooms[`${room_name}_list`],socket.id]
