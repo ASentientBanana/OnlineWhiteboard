@@ -10,3 +10,7 @@
 .register-user-page-container input {
   color: #580838;
 }
+
+.register-user-page-container button {
+  background-color: #580838;
+}

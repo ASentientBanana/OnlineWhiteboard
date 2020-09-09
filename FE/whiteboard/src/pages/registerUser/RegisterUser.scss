@@ -11,5 +11,10 @@
     input{
         color:$main-dark ;
     }
+    button{
+        background: {
+            color: $main-dark;
+        };
+    }
 }
 

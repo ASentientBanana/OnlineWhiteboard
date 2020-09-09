@@ -1,5 +1,6 @@
 nav {
   text-align: center;
-  background-color: #580838;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#8a5273), color-stop(#580838), to(#8a5273));
+  background-image: linear-gradient(#8a5273, #580838, #8a5273);
   font-size: 2em;
 }

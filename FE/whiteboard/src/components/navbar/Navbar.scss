@@ -2,7 +2,7 @@
 nav {
   // border-bottom: solid black 2px;
   text-align: center;
-  background-color: $main-dark;
+  background-image: linear-gradient($main-light, $main-dark, $main-light);
   font-size: 2em;
-
+  
 }

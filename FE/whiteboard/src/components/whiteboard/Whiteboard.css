@@ -20,4 +20,6 @@
   border-image-source: url("../../assets/images/SARAA.jpg");
   border-image-slice: 40;
   border-image-repeat: stretch;
+  -webkit-box-shadow: 0px 0px 800px 1px black;
+          box-shadow: 0px 0px 800px 1px black;
 }

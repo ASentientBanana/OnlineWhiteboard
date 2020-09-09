@@ -11,11 +11,11 @@ app.use(cors());
 app.use(express.json());
 
 // rooms: {
-//      room_name: {
-//             Owner:{}
-//              users:[      
+//     room_name: {
+//           Owner:{}
+//             users:[      
 
-//                 ]
+//      ]
 //     }
 // }
 //ovo je struktura za sobe
