@@ -10,14 +10,16 @@ const db = require('./config/database.ts')
 app.use(cors());
 app.use(express.json());
 
+// rooms: {
+//      room_name: {
+//             Owner:{}
+//              users:[      
 
+//                 ]
+//     }
+// }
+//ovo je struktura za sobe
 
-// //test
-// db.authenticate().then(()=>{ 
-//   console.log('db connected')
-// }).catch((e:any)=>{
-//   console.log(e);
-// })
 
 const rooms:any = {
   owners:{
@@ -27,7 +29,7 @@ const rooms:any = {
 io.on('connection', (socket:any) => { //event sta se desava kada se konektuje na socket
   console.log(socket.id);
   socket.on('join_room',(room_name:string)=>{ //event poziva se ovo kada se desi join_room
-    roomHandlerFacade(socket,room_name);
+    roomJoinHandlerFacade(socket,room_name);
     socket.join(room_name);//funkcija za ulazenje u sobu
     rooms[socket.id] = room_name;//ubaci se u objekat za sobu gde je key id soketa a ime sobe value
   })
@@ -37,6 +39,9 @@ io.on('connection', (socket:any) => { //event sta se desava kada se konektuje na
   })
   socket.on('chat-message',(msg:any)=>{//prosledjuju se poruke
     LoggerSingleton.logs.chats.push(msg);
+    console.log("------");
+    console.log(rooms['ses'].users[0]);
+    
     io.to(rooms[socket.id]).emit('chat-message',msg);
   })
 })
@@ -47,17 +52,18 @@ io.on('disconnect',(socket:any)=>{
   delete rooms.owners[socket.id]
 })
 
-const roomHandlerFacade = (socket:any,room_name:string)=>{
+const roomJoinHandlerFacade = (socket:any,room_name:string)=>{
   if(!rooms.hasOwnProperty(room_name)){
-    rooms[room_name] = socket.id
-    socket.emit('isOwner',200)
+    const id = socket.id; 
+  rooms[room_name] = {
+    owner:{
+      socket
+    },
+    users:[{socket}]
+  }
   }else{
-    if(rooms.hasOwnProperty(`${room_name}_list`)){
-      rooms[`${room_name}_list`] = [...rooms[`${room_name}_list`],socket.id]
-    }else{
-      rooms[`${room_name}_list`] = [socket.id]
-      
-    }
+    const id = socket.id
+    rooms[room_name].users.push({id:socket});
   }
 }
 

@@ -6,15 +6,23 @@ class Logger{
             Logger.instance = this;
         }
         this.logs = {
-            colors:[],
-            chats:[],
+            colors:{},
+            chats:{},
         }
         return Logger.instance;
     }
      logPrint (){
         console.log(this.logs);            
     }
-     addLog (x:string){
+
+    addColorLog(clr:string){
+        const clrLog =this.logs.colors;
+        if(clrLog.hasOwnProperty(clr)){
+            clrLog[clr] = clrLog + 1;
+        }
+    }
+
+     addChatLog (x:string){
         this.logs.push(x)           
     }
 }

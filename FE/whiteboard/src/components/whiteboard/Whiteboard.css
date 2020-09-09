@@ -14,9 +14,10 @@
 }
 
 .whiteboard-container canvas {
-  border: #f0a2a2 solid 20px;
-  border-image-repeat: space;
+  border: #f0a2a2 solid 15px;
   background-color: #d8c1c1;
-  border-radius: 10%;
   cursor: crosshair;
+  border-image-source: url("../../assets/images/SARAA.jpg");
+  border-image-slice: 40;
+  border-image-repeat: stretch;
 }
