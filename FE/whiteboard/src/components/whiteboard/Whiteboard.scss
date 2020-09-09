@@ -6,11 +6,11 @@
   height: 600px;
   width: 800px;
   canvas {
-    border: rgb(240, 162, 162) solid 20px;
-    // border-image-source: url("../../assets/images/SARAA.jpg")  ;
-    border-image-repeat: space ;
+    border: rgb(240, 162, 162) solid 15px;
     background-color: rgb(216, 193, 193);
-    border-radius: 10%;
     cursor:crosshair;
+    border-image-source: url('../../assets/images/SARAA.jpg');
+    border-image-slice: 40;
+    border-image-repeat: stretch;
   }
 }

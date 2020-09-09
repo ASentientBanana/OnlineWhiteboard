@@ -45,6 +45,7 @@ export const Whiteboard = ({ socket }: any) => {
   const draw = (e: React.MouseEvent<HTMLCanvasElement>, isLocal: boolean,isOwner:boolean) => {
     
     if (!drawing && isLocal) return;
+    isOwner = true;//izbaci ovo
     if (myCanvas && isOwner && isClicked) {
       if (isLocal) {
         const { scrollX, scrollY } = window;
@@ -86,7 +87,6 @@ export const Whiteboard = ({ socket }: any) => {
   }
 
   window.addEventListener('mouseup',()=>{
-    // myCanvas?.ctx.beginPath();
     setIsClicked(false)
   })
   return (
@@ -99,7 +99,6 @@ export const Whiteboard = ({ socket }: any) => {
           ref={canvasRef}
           onMouseDown={startPos}
           onMouseUp={()=>{
-            // myCanvas?.ctx.beginPath();
             endPos()
           }}
           onMouseLeave={()=>{
