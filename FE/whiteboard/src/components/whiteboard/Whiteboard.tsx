@@ -10,15 +10,16 @@ export const Whiteboard = ({ socket }: any) => {
   const [color, setColor] = useContext(ColorContext);
   const [lineWidth, setLineWidth] = useState(1);
   const [myCanvas, setMyCanvas] = useState<whiteboard>();
-  const [isOwner,setIsOwner] = useState<boolean>(false);
-  const [drawing,setDrawing] = useState<boolean>(false);
-  const [isClicked,setIsClicked] = useState<boolean>(false);
+  const [isOwner, setIsOwner] = useState<boolean>(false);
+  const [drawing, setDrawing] = useState<boolean>(false);
+  const [isClicked, setIsClicked] = useState<boolean>(false);
+  // const defaultCanvasColor = "#d8c1c1";
   // let drawing = false;
   let tmp: whiteboard;
   useEffect(() => {
-    socket.on('isOwner',(e:any)=>{
+    socket.on('isOwner', (e: any) => {
       console.log(e);
-      if(e == 200){
+      if (e == 200) {
         setIsOwner(true);
       }
     });
@@ -26,6 +27,7 @@ export const Whiteboard = ({ socket }: any) => {
       tmp = new whiteboardBuilder(canvasRef.current)
         .withHeight(whiteboardContainer.current.clientHeight)
         .withWidth(whiteboardContainer.current.clientWidth)
+        .withBackgroundColor("#d8c1c1")
         .build();
     setMyCanvas(tmp);
   }, []);
@@ -33,60 +35,54 @@ export const Whiteboard = ({ socket }: any) => {
   const startPos = (e: any) => {
     setIsClicked(true);
     setDrawing(true);
+    myCanvas?.setCanvasImageData();
     // draw(e, true,isOwner);
   };
 
   const endPos = () => {
     setIsClicked(true);
     setDrawing(false);
-    myCanvas?.ctx.beginPath();
+    myCanvas?.clearShapeArray();
   };
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>, isLocal: boolean,isOwner:boolean) => {
-    
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>, isLocal: boolean, isOwner: boolean) => {
+
     if (!drawing && isLocal) return;
-    isOwner = true;//izbaci ovo
+    isOwner = true; //izbaci ovo
     if (myCanvas && isOwner && isClicked) {
       if (isLocal) {
         const { scrollX, scrollY } = window;
         const offsetX = e.clientX - myCanvas.canvas.offsetLeft + scrollX;
         const offsetY = e.clientY - myCanvas.canvas.offsetTop + scrollY;
-        const data = myCanvas.draw(offsetX, offsetY, { color, lineWidth });
+        const data = myCanvas.drawShape(offsetX, offsetY, { color , lineWidth, shape:"circle"});
         socket.emit("draw", data);
       } else {
-        myCanvas.draw(e.clientX, e.clientY, e);
+        console.log(e);
+        // const {color,lineWidth,shape} = e;
+        // myCanvas.drawShape(e.clientX, e.clientY,{e.color,} ,);
       }
     }
   };
   socket.on("draw", (e: any) => {
-    draw(e, false,true);
+    draw(e, false, true);
   });
   const clearCanvas = () =>
-    myCanvas?.ctx.clearRect(
-      0,
-      0,
-      myCanvas.canvas.width,
-      myCanvas.canvas.height
-    );
+{
+      myCanvas?.clearCanvas();
+}
 
   const paintCanvas = () => {
-    myCanvas!.ctx.fillStyle = color;
-    myCanvas!.ctx.fillRect(
-      0,
-      0,
-      myCanvas?.canvas.width,
-      myCanvas?.canvas.height
-    );
+    myCanvas?.paintCanvas(color);
   };
   const brushSizeSet = (e: any) => {
     setLineWidth(e);
   };
 
-  const saveCanvas = ()=>{
+  const saveCanvas = () => {
     const b = myCanvas?.saveWhiteboard('jpg')
   }
 
-  window.addEventListener('mouseup',()=>{
+  window.addEventListener('mouseup', () => {
     setIsClicked(false)
   })
   return (
@@ -98,17 +94,17 @@ export const Whiteboard = ({ socket }: any) => {
         <canvas
           ref={canvasRef}
           onMouseDown={startPos}
-          onMouseUp={()=>{
+          onMouseUp={() => {
             endPos()
           }}
-          onMouseLeave={()=>{
+          onMouseLeave={() => {
             setDrawing(false);
           }}
-          onMouseEnter={()=>{
+          onMouseEnter={() => {
             setDrawing(true);
           }}
           onMouseMove={e => {
-            draw(e, true,isOwner);
+            draw(e, true, isOwner);
           }}
         ></canvas>
       </div>

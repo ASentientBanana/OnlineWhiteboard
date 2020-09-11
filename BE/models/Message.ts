@@ -1,15 +1,15 @@
-// const SequalizeMsg = require('sequelize');
-const database = require('../config/database');
+// // const SequalizeMsg = require('sequelize');
+// const database = require('../config/database');
 
 
-const Message = db.define('message',{
+// const Message = db.define('message',{
 
-    username:{
-        type:Sequalize.String 
-    },
-    message_body:{
-        type:Sequalize.String 
-    }
+//     username:{
+//         type:Sequalize.String 
+//     },
+//     message_body:{
+//         type:Sequalize.String 
+//     }
 
-});
-module.exports = Message;
+// });
+// module.exports = Message;

@@ -15,7 +15,6 @@
 
 .whiteboard-container canvas {
   border: #f0a2a2 solid 15px;
-  background-color: #d8c1c1;
   cursor: crosshair;
   border-image-source: url("../../assets/images/SARAA.jpg");
   border-image-slice: 40;

@@ -4,8 +4,8 @@ let http = require('http').createServer(app);
 let io = require('socket.io')(http);
 const cors = require('cors');
 const LoggerSingleton = require('./logger');
-const db = require('./config/database.ts')
-
+const db = require('./config/database.ts');
+const MessageModel = require('./models/Message');
 
 app.use(cors());
 app.use(express.json());
@@ -34,8 +34,9 @@ io.on('connection', (socket:any) => { //event sta se desava kada se konektuje na
     rooms[socket.id] = room_name;//ubaci se u objekat za sobu gde je key id soketa a ime sobe value
   })
   socket.on('draw',(e:any)=>{//soket koji prosledjuje koordinate crteza svima u sobi
-    LoggerSingleton.logs.colors.push(e.color)
-    io.to(rooms[socket.id]).emit('draw',e)//event ime je draw
+    // LoggerSingleton.logs.colors.push(e.color)
+    console.log(e);
+    // io.to(rooms[socket.id]).emit('draw',e)//event ime je draw
   })
   socket.on('chat-message',(msg:any)=>{//prosledjuju se poruke
     LoggerSingleton.logs.chats.push(msg);
