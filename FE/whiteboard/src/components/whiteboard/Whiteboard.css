@@ -22,3 +22,18 @@
   -webkit-box-shadow: 0px 0px 800px 1px black;
           box-shadow: 0px 0px 800px 1px black;
 }
+
+.word-input {
+  color: #580838;
+  border-color: #580838 !important;
+}
+
+.word-input .submit-word-btn {
+  background-color: #580838;
+  border-radius: 10px;
+}
+
+.word-input .submit-word-btn:hover {
+  background-color: #8a5273;
+  border-radius: 10px;
+}

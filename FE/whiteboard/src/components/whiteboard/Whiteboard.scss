@@ -1,3 +1,4 @@
+@import '../../assets/Colors.scss';
 .whiteboard-container {
   padding: 0 !important;
   display: flex;
@@ -12,6 +13,17 @@
     border-image-slice: 40;
     border-image-repeat: stretch;
     box-shadow: 0px 0px 800px 1px rgba(0, 0, 0,1);
-
+  }
+}
+.word-input{
+  color: $main-dark;
+  border-color: $main-dark !important;
+  .submit-word-btn{
+    background-color: $main-dark;
+    border-radius: 10px;
+  }
+  .submit-word-btn:hover{
+    background-color: $main-light;
+    border-radius: 10px;
   }
 }

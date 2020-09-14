@@ -38,19 +38,22 @@ io.on('connection', (socket:any) => { //event sta se desava kada se konektuje na
     console.log(e);
     // io.to(rooms[socket.id]).emit('draw',e)//event ime je draw
   })
+  socket.on('update-word',(word:string)=>{
+    if(rooms[rooms[socket.id]].owner.socket.id === socket.id){
+      rooms[rooms[socket.id]]["word"] = word;
+    }
+  })
   socket.on('chat-message',(msg:any)=>{//prosledjuju se poruke
     LoggerSingleton.logs.chats.push(msg.body);
     io.to(rooms[socket.id]).emit('chat-message',msg);
-    if(findWord("peki",msg.body.toLowerCase())){
+    if(findWord(rooms[rooms[socket.id]].word,msg.body.toLowerCase())){
       io.to(rooms[socket.id]).emit('WINNER',msg.name)
-    }
-    
+    } 
   })
 })
 io.on('disconnect',(socket:any)=>{
   console.log(`${socket.id} is dead`);
   delete rooms[socket.id]
-  // rooms.owners[]
   delete rooms.owners[socket.id]
 })
 const findWord = (word:string, str:string) => {
@@ -64,7 +67,6 @@ const roomJoinHandlerFacade = (socket:any,room_name:string)=>{
     owner:{
       socket
     },
-    word:"tt",
     users:[{socket}]
   }
   }else{

@@ -1,4 +1,4 @@
-import React, { useEffect, createRef, useContext, useState } from "react";
+import React, { useEffect, createRef, useContext, useState, InputHTMLAttributes } from "react";
 import "./Whiteboard.css";
 import { ColorContext } from "../../contexts/ColorContext";
 import whiteboardBuilder, { whiteboard } from "../../hooks/facadeWhiteboard";
@@ -7,6 +7,7 @@ import Tools from "../tools/Tools";
 export const Whiteboard = ({ socket }: any) => {
   const canvasRef = createRef<HTMLCanvasElement>();
   const whiteboardContainer = createRef<HTMLDivElement>();
+  const drawingWordRef = createRef<HTMLInputElement>();
   const [color, setColor] = useContext(ColorContext);
   const [lineWidth, setLineWidth] = useState(1);
   const [myCanvas, setMyCanvas] = useState<whiteboard>();
@@ -33,6 +34,7 @@ export const Whiteboard = ({ socket }: any) => {
   }, []);
 
   const startPos = (e: any) => {
+    myCanvas?.clearShapeArray()
     setIsClicked(true);
     setDrawing(true);
     myCanvas?.setCanvasImageData();
@@ -43,10 +45,11 @@ export const Whiteboard = ({ socket }: any) => {
     setIsClicked(true);
     setDrawing(false);
     myCanvas?.clearShapeArray();
+    console.log(myCanvas?.shapeArray);
+    
   };
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement>, isLocal: boolean, isOwner: boolean) => {
-
     if (!drawing && isLocal) return;
     isOwner = true; //izbaci ovo
     if (myCanvas && isOwner && isClicked) {
@@ -54,7 +57,7 @@ export const Whiteboard = ({ socket }: any) => {
         const { scrollX, scrollY } = window;
         const offsetX = e.clientX - myCanvas.canvas.offsetLeft + scrollX;
         const offsetY = e.clientY - myCanvas.canvas.offsetTop + scrollY;
-        const data = myCanvas.drawShape(offsetX, offsetY, { color , lineWidth, shape:"circle"});
+        const data = myCanvas.drawShape(offsetX, offsetY, { color, lineWidth, shape: "rectangle" });
         socket.emit("draw", data);
       } else {
         console.log(e);
@@ -66,10 +69,9 @@ export const Whiteboard = ({ socket }: any) => {
   socket.on("draw", (e: any) => {
     draw(e, false, true);
   });
-  const clearCanvas = () =>
-{
-      myCanvas?.clearCanvas();
-}
+  const clearCanvas = () => {
+    myCanvas?.clearCanvas();
+  }
 
   const paintCanvas = () => {
     myCanvas?.paintCanvas(color);
@@ -83,7 +85,7 @@ export const Whiteboard = ({ socket }: any) => {
   }
 
   window.addEventListener('mouseup', () => {
-    setIsClicked(false)
+    setIsClicked(false);
   })
   return (
     <div>
@@ -95,7 +97,7 @@ export const Whiteboard = ({ socket }: any) => {
           ref={canvasRef}
           onMouseDown={startPos}
           onMouseUp={() => {
-            endPos()
+            endPos();
           }}
           onMouseLeave={() => {
             setDrawing(false);
@@ -115,7 +117,21 @@ export const Whiteboard = ({ socket }: any) => {
         saveCanvas={saveCanvas}
       />
       <div>
+        <div className="col s12 word-input">
+          Wtite what you are drawing here:
+            <div className="input-field inline">
+            <input id="drawing_word" type="text" className="validate" ref={drawingWordRef}  />
+            <span className="helper-text" data-error="wrong" data-success="right">Owner only</span>
+            <a className="waves-effect waves-light btn submit-word-btn" onClick={ ()=>{
+                if(drawingWordRef.current?.value != "" && drawingWordRef.current){
+                  socket.emit("update-word",drawingWordRef.current.value);
+                  drawingWordRef.current.value = "";
+                }
+          }}><i className="material-icons left">import_contacts</i>Submit word</a>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
+// 

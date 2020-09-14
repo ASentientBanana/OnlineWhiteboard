@@ -6,8 +6,8 @@ import { useParams } from "react-router-dom";
 import "./DrawingPage.css";
 import WinnerBanner from '../../components/winnerBaner/WinerBanner'
 
-export const DrawingPage = ({ socket }: any) => {
-  const { name } = useParams();
+export const DrawingPage = ({ socket }:any) => {
+  const { name } = useParams<any>();
   useEffect(() => {
     socket.on("test", (e: any) => {
       console.log(e);

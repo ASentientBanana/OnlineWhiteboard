@@ -24,7 +24,7 @@
 .tool-container .clear-btn {
   background-color: #580838;
   width: 100% !important;
-  border-radius: 25px;
+  border-radius: 10px;
 }
 
 .tool-container .clear-btn:hover {
@@ -39,7 +39,7 @@
 .tool-container .buttons-container a {
   width: 50%;
   background-color: #580838;
-  border-radius: 25px;
+  border-radius: 10px;
 }
 
 .tool-container #brush-size-slider {

@@ -68,25 +68,21 @@ export class whiteboard {
   }
 
   drawShape(positionX: number, positionY: number, { color = "#000000", lineWidth = 50,  shape ="rectangle"}: IShapeDrawingOptions) {
+    this.shapeArray.push({ positionX, positionY })
     if(!this.canvasImageData) this.canvasImageData = this.imgData;
     this.canvasImageData = this.ctx?.putImageData(this.canvasImageData, 0 , 0);
     this.ctx?.beginPath();
-    this.shapeArray.push({ positionX, positionY })
     const data = {color,lineWidth,shape}
     const startPosX = this.shapeArray[0].positionX;
     const startPosY = this.shapeArray[0].positionY;
     const currPosX = positionX - startPosX;
-    const currPosY = positionY - startPosY
+    const currPosY = positionY - startPosY;
 
     if(shape == "rectangle"){
       this.drawRectangle(startPosX,startPosY,currPosX,currPosY);
     }
     else if(shape == "triangle"){
 
-    }
-    else if(shape == "circle"){
-      
-      this.drawCircle(startPosY,startPosY,positionX,positionY)
     }
     
     
@@ -97,10 +93,10 @@ export class whiteboard {
   private drawRectangle(startX:number,startY:number,endPosX:number,endPosY:number){
     this.ctx!.rect(startX,startY,endPosX,endPosY);
   }
-  private drawCircle(startPosX:number,startPosY:number,currPosX:number,currPosY:number,diameter :number = 10 ){
+  private drawCircle(startPosX:number,startPosY:number,currPosX:number,currPosY:number=0){
     const x = Math.pow(currPosX-startPosX,2);
     const y = Math.pow(currPosY-startPosY,2);
-    diameter =Math.sqrt(x+y);
+    const diameter =Math.sqrt(x+y);
     this.ctx!.arc(startPosX,startPosY,diameter,0,2*Math.PI,false)
   }
 

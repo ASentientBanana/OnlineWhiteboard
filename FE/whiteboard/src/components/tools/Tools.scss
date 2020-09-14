@@ -19,7 +19,7 @@
   .clear-btn {
     background-color: $main-faded;
     width: 100% !important;
-    border-radius: 25px;
+    border-radius: 10px;
   }
   .clear-btn:hover {
     background-color: $main-light;
@@ -30,7 +30,7 @@
     a{
         width: 50%;
         background-color: $main-faded;
-        border-radius: 25px;
+        border-radius: 10px;
     }
   }
   #brush-size-slider  {

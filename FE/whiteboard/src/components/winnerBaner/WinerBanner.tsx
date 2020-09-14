@@ -4,7 +4,6 @@ import {NameContext} from '../../contexts/NameProvider';
 const WinnerBanner = () =>{
   const [winner,setWinner] = useContext(WinnerBannerContext);
   const [name,setName] = useContext(NameContext);
-  const [winnerName, setWinnerName] = useState('');
   useEffect(()=>{
     console.log('rend');
     
