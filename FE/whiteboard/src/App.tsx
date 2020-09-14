@@ -3,15 +3,19 @@ import "./App.css";
 import "materialize-css/dist/css/materialize.css";
 import { Navbar } from "./components/navbar/Navbar";
 import { ColorProvider } from "./contexts/ColorContext";
+import { WinnerBannerProvider } from "./contexts/WinnerBannerProvider";
+import { NameProvider } from "./contexts/NameProvider";
 import { DrawingPage } from "./pages/drwing/DrawingPage";
 import { RegisterUser } from "./pages/registerUser/RegisterUser";
 import { BrowserRouter as Router, Route, Switch, useParams } from "react-router-dom";
 import io from "socket.io-client";
-const socket = io("http://localhost:4002");{/* povezuje se socket sa serverom */}
+const socket = io("http://localhost:4009");{/* povezuje se socket sa serverom */}
 function App() {
   return (
     <div className="App">
       <ColorProvider>
+      <WinnerBannerProvider>
+        <NameProvider>
         <Router>
           <Navbar />
           <Switch>
@@ -26,6 +30,8 @@ function App() {
             </Route>
           </Switch>
         </Router>
+        </NameProvider>
+      </WinnerBannerProvider>
       </ColorProvider>
     </div>
   );

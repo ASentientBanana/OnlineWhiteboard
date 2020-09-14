@@ -2,12 +2,12 @@ class Logger{
     private static instance:Logger;
     private logs:any;
     constructor(){
-        if(Logger.instance == null){
+        if(Logger.instance === null){
             Logger.instance = this;
         }
         this.logs = {
             colors:{},
-            chats:{},
+            chats:[],
         }
         return Logger.instance;
     }
@@ -21,7 +21,6 @@ class Logger{
             clrLog[clr] = clrLog + 1;
         }
     }
-
      addChatLog (x:string){
         this.logs.push(x)           
     }

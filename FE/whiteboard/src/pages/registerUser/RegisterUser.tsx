@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { Link } from "react-router-dom";
 import './RegisterUser.css'
+import {NameContext} from '../../contexts/NameProvider';
 export const RegisterUser = ({socket}:any) => {
   const [name, setName] = useState<string>("Jane Doe");
   const [roomName, setRoomName] = useState<string>("Jane Doe");
-
+  const [nameCtx,setNameCtx] = useContext(NameContext);
   const submit = () => {};
 
   return (
@@ -30,18 +31,10 @@ export const RegisterUser = ({socket}:any) => {
         <Link to={{
           pathname:`/draw/${name}`,
         }}>
-          <button type="button" value="Register" onClick={ ()=>{
+          <a className="waves-effect waves-light btn join-btn" onClick={ ()=>{
+            setNameCtx(name);
             socket.emit('join_room',roomName)
-            // console.log(socket);
-          }}>
-            Join Room
-          </button>
-          <button type="button" value="Register" onClick={ ()=>{
-            // socket.emit('joinRoom',{name,roomName})
-            // console.log(socket);
-          }}>
-            Register Room
-          </button>
+          }}><i className="material-icons left">brush</i>Join/Create  Room</a>
         </Link>
       </form>
     </div>

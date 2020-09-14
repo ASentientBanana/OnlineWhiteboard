@@ -11,10 +11,8 @@
     input{
         color:$main-dark ;
     }
-    button{
-        background: {
-            color: $main-dark;
-        };
+    .join-btn{
+        background-color: $main-dark;
     }
 }
 

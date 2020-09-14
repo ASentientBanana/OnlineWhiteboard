@@ -39,11 +39,12 @@ io.on('connection', (socket:any) => { //event sta se desava kada se konektuje na
     // io.to(rooms[socket.id]).emit('draw',e)//event ime je draw
   })
   socket.on('chat-message',(msg:any)=>{//prosledjuju se poruke
-    LoggerSingleton.logs.chats.push(msg);
-    console.log("------");
-    console.log(rooms['ses'].users[0]);
-    
+    LoggerSingleton.logs.chats.push(msg.body);
     io.to(rooms[socket.id]).emit('chat-message',msg);
+    if(findWord("peki",msg.body.toLowerCase())){
+      io.to(rooms[socket.id]).emit('WINNER',msg.name)
+    }
+    
   })
 })
 io.on('disconnect',(socket:any)=>{
@@ -52,7 +53,10 @@ io.on('disconnect',(socket:any)=>{
   // rooms.owners[]
   delete rooms.owners[socket.id]
 })
-
+const findWord = (word:string, str:string) => {
+  console.log(str);
+  return str.split(' ').some((w) => {return w === word})
+}
 const roomJoinHandlerFacade = (socket:any,room_name:string)=>{
   if(!rooms.hasOwnProperty(room_name)){
     const id = socket.id; 
@@ -60,6 +64,7 @@ const roomJoinHandlerFacade = (socket:any,room_name:string)=>{
     owner:{
       socket
     },
+    word:"tt",
     users:[{socket}]
   }
   }else{
@@ -68,7 +73,7 @@ const roomJoinHandlerFacade = (socket:any,room_name:string)=>{
   }
 }
 
-http.listen("4002",()=>{
+http.listen("4009",()=>{
   console.log('connected to 4001');
 });
 

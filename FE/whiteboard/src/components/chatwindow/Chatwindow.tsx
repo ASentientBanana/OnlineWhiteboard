@@ -2,26 +2,34 @@ import React, {
   useState,
   useEffect,
   createRef,
+  useContext
 } from "react";
 import ChatMessage from "./ChatMessage";
 import "./Chatwindow.css";
+import {WinnerBannerContext} from '../../contexts/WinnerBannerProvider';
 
-export const Chatwindow = ({ socket }: any) => {
+
+export const Chatwindow = ({ socket  , name}: any) => {
+  const [winner,setWinner] = useContext(WinnerBannerContext);
   const [chatInputText, setChatInputText] = useState("");
   const inputRef = createRef<HTMLTextAreaElement>();
   const messageContainerRef = createRef<HTMLDivElement>();
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<any[]>([]);
+  const chatWindow = createRef<HTMLDivElement>();
 
   useEffect(() => {
     socket.on("chat-message", (msg: any) => {
       console.log(msg);
       appendMessages(msg);
     });
+    socket.on("WINNER", (winnerName: any) => {
+      console.log('winnin');
+      setWinner(winnerName);
+    });
   }, [messages]);
 
-  const chatWindow = createRef<HTMLDivElement>();
-
   const appendMessages = (msg: any) => {
+    if(msg.name == name) msg.name = "You";
     setMessages([...messages, msg]);
   };
   const chatInputHandle = (e: any) => {
@@ -30,12 +38,11 @@ export const Chatwindow = ({ socket }: any) => {
   const sendChatMsg = (e: any) => {
     e.preventDefault();
     if (chatInputText) {
-      socket.emit("chat-message", chatInputText);
+      const body = chatInputText;
+      const msg = {name,body};
+      socket.emit("chat-message", msg);
       setChatInputText("");
-
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
+      if (inputRef.current) inputRef.current.value = "";
     }
     if (messageContainerRef.current) {
       messageContainerRef.current.scrollTop = messageContainerRef.current.offsetHeight;
@@ -63,7 +70,7 @@ export const Chatwindow = ({ socket }: any) => {
           <h3 className="center chat-header"> Chat</h3>
           <div className="textarea-output" ref={messageContainerRef}>
             {messages.map((msg, index) => (
-              <ChatMessage body={msg} time={'now'} name={"anon"} key={index} />
+              <ChatMessage body={msg.body} time={msg.name} name={msg.name} key={index} />
             ))}
           </div>
           <textarea
@@ -93,7 +100,7 @@ export const Chatwindow = ({ socket }: any) => {
         </form>
       </div>
       <button
-        className="open-button  btn-floating btn-large waves-effect waves-light"// btn-floating btn-large waves-effect waves-light
+        className="open-button  btn-floating btn-large waves-effect waves-light"
         onClick={openChatWindow}
       >
         Chat

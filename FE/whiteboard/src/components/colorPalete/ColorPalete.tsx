@@ -6,7 +6,7 @@ import './ColorPalete.css';
 
 
 export const ColorPalete = ()=>{
-    const colors:string[] = ["#FF0000","#0000FF","#00FF00","#FF00BF","#2EFEF7","#6E6E6E","#000000","#FFFFFF"];
+    const colors:string[] = ["#000000","#FFFFFF","#7e7e81","#ff0009","#00ff0c","#0008ff","#ffe414","#19bae6",];
     return(
         <div className="color-palete-container col s6">
             {colors.map((color,index)=>(<Color color={color} key={index}/>))}
