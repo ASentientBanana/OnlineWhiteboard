@@ -84,6 +84,13 @@ export const Whiteboard = ({ socket }: any) => {
     const b = myCanvas?.saveWhiteboard('jpg')
   }
 
+  const submitWord = () =>{
+    if(drawingWordRef.current?.value != "" && drawingWordRef.current){
+      socket.emit("update-word",drawingWordRef.current.value);
+      drawingWordRef.current.value = "";
+    }
+  }
+
   window.addEventListener('mouseup', () => {
     setIsClicked(false);
   })
@@ -122,12 +129,7 @@ export const Whiteboard = ({ socket }: any) => {
             <div className="input-field inline">
             <input id="drawing_word" type="text" className="validate" ref={drawingWordRef}  />
             <span className="helper-text" data-error="wrong" data-success="right">Owner only</span>
-            <a className="waves-effect waves-light btn submit-word-btn" onClick={ ()=>{
-                if(drawingWordRef.current?.value != "" && drawingWordRef.current){
-                  socket.emit("update-word",drawingWordRef.current.value);
-                  drawingWordRef.current.value = "";
-                }
-          }}><i className="material-icons left">import_contacts</i>Submit word</a>
+            <a className="waves-effect waves-light btn submit-word-btn" onClick={submitWord}><i className="material-icons left">import_contacts</i>Submit word</a>
           </div>
         </div>
       </div>
