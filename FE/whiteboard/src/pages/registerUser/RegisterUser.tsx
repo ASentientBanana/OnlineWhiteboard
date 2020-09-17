@@ -1,12 +1,12 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import './RegisterUser.css'
-import {NameContext} from '../../contexts/NameProvider';
-export const RegisterUser = ({socket}:any) => {
+import { NameContext } from '../../contexts/NameProvider';
+export const RegisterUser = ({ socket }: any) => {
   const [name, setName] = useState<string>("Jane Doe");
   const [roomName, setRoomName] = useState<string>("Jane Doe");
-  const [nameCtx,setNameCtx] = useContext(NameContext);
-  const submit = () => {};
+  const [nameCtx, setNameCtx] = useContext(NameContext);
+  const submit = () => { };
 
   return (
     <div className="container center register-user-page-container">
@@ -29,12 +29,12 @@ export const RegisterUser = ({socket}:any) => {
           }}
         />
         <Link to={{
-          pathname:`/draw/${name}`,
+          pathname: `/draw/${name}`,
         }}>
-          <a className="waves-effect waves-light btn join-btn" onClick={ ()=>{
+          <div className="waves-effect waves-light btn join-btn" onClick={() => {
             setNameCtx(name);
-            socket.emit('join_room',roomName)
-          }}><i className="material-icons left">brush</i>Join/Create  Room</a>
+            socket.emit('join_room', roomName)
+          }}><i className="material-icons left">brush</i>Join/Create  Room</div>
         </Link>
       </form>
     </div>

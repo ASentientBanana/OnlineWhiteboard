@@ -7,7 +7,7 @@ import saveIcon from "../../assets/images/save.png";
 interface tools {
   canvasCtx: CanvasRenderingContext2D;
 }
-const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas }: any) => {
+const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas, setDrawMode }: any) => {
   const sliderRef = createRef<HTMLInputElement>();
   useEffect(() => {
     if (sliderRef.current) {
@@ -43,6 +43,18 @@ const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas }: any) => {
         </a>
         <a className="waves-effect waves-light btn" onClick={paintCanvas}>
           <i className="material-icons center">format_paint</i>
+        </a>
+      </div>
+      <div className="buttons-container">
+        <a className="waves-effect waves-light btn" onClick={() => {
+          setDrawMode('line')
+        }}>
+          <i className="material-icons center">brush</i>
+        </a>
+        <a className="waves-effect waves-light btn" onClick={() => {
+          setDrawMode('rectangle')
+        }}>
+          <i className="material-icons center">check_box_outline_blank</i>
         </a>
       </div>
     </div>

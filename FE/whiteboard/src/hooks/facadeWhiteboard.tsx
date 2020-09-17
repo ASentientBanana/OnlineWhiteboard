@@ -9,9 +9,9 @@ interface shapeArray {
   positionY: number,
 }
 interface IShapeDrawingOptions {
-  color :string,
+  color: string,
   lineWidth: number,
-  shape:string
+  shape: string
 }
 export class whiteboard {
 
@@ -20,8 +20,8 @@ export class whiteboard {
   canvas: HTMLCanvasElement;
   shapeArray: shapeArray[];
   canvasImageData: CanvasImageData | any;
-  imgData:any;
-  defaultCanvasColor:string;
+  imgData: any;
+  defaultCanvasColor: string;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -31,7 +31,7 @@ export class whiteboard {
     this.defaultCanvasColor = "#d8c1c1"
   }
 
-  draw(positionX: number, positionY: number, { color = "#000000", lineWidth = 50, lineCap = 'round' }: IDrawingOptions) {
+  draw(positionX: number, positionY: number, { color, lineWidth = 50, lineCap = 'round' }: IDrawingOptions) {
     this.ctx!.lineWidth = lineWidth;
     this.ctx!.lineCap = lineCap;
     this.ctx!.strokeStyle = color;
@@ -48,9 +48,9 @@ export class whiteboard {
     }
   }
 
-   
+
   setCanvasImageData() {
-    this.canvasImageData = this.ctx?.getImageData(0,0, this.canvas.width, this.canvas.height)
+    this.canvasImageData = this.ctx?.getImageData(0, 0, this.canvas.width, this.canvas.height)
     this.imgData = this.canvasImageData;
   }
   clearShapeArray() {
@@ -67,37 +67,36 @@ export class whiteboard {
     )
   }
 
-  drawShape(positionX: number, positionY: number, { color = "#000000", lineWidth = 50,  shape ="rectangle"}: IShapeDrawingOptions) {
+  drawShape(positionX: number, positionY: number, { color = "#000000", lineWidth = 1, shape = "rectangle" }: IShapeDrawingOptions) {
     this.shapeArray.push({ positionX, positionY })
-    if(!this.canvasImageData) this.canvasImageData = this.imgData;
-    this.canvasImageData = this.ctx?.putImageData(this.canvasImageData, 0 , 0);
+    if (!this.canvasImageData) this.canvasImageData = this.imgData;
+    this.canvasImageData = this.ctx?.putImageData(this.canvasImageData, 0, 0);
     this.ctx?.beginPath();
-    const data = {color,lineWidth,shape}
+    const data = { color, lineWidth, shape }
     const startPosX = this.shapeArray[0].positionX;
     const startPosY = this.shapeArray[0].positionY;
     const currPosX = positionX - startPosX;
     const currPosY = positionY - startPosY;
+    console.log(this.shapeArray);
 
-    if(shape == "rectangle"){
-      this.drawRectangle(startPosX,startPosY,currPosX,currPosY);
+    if (shape == "rectangle") {
+      this.drawRectangle(startPosX, startPosY, currPosX, currPosY);
     }
-    else if(shape == "triangle"){
+    else if (shape == "triangle") { }
 
-    }
-    
-    
-    
+
+
     this.ctx!.stroke();
-    return {positionX,positionY,data}
+    return { positionX, positionY, data }
   }
-  private drawRectangle(startX:number,startY:number,endPosX:number,endPosY:number){
-    this.ctx!.rect(startX,startY,endPosX,endPosY);
+  private drawRectangle(startX: number, startY: number, endPosX: number, endPosY: number) {
+    this.ctx!.rect(startX, startY, endPosX, endPosY);
   }
-  private drawCircle(startPosX:number,startPosY:number,currPosX:number,currPosY:number=0){
-    const x = Math.pow(currPosX-startPosX,2);
-    const y = Math.pow(currPosY-startPosY,2);
-    const diameter =Math.sqrt(x+y);
-    this.ctx!.arc(startPosX,startPosY,diameter,0,2*Math.PI,false)
+  private drawCircle(startPosX: number, startPosY: number, currPosX: number, currPosY: number = 0) {
+    const x = Math.pow(currPosX - startPosX, 2);
+    const y = Math.pow(currPosY - startPosY, 2);
+    const diameter = Math.sqrt(x + y);
+    this.ctx!.arc(startPosX, startPosY, diameter, 0, 2 * Math.PI, false)
   }
 
   clearCanvas() {
