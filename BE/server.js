@@ -6,17 +6,17 @@ const Logger = require('./logger');
 
 app.use(cors());
 
-const rooms = {eee:'e'}
+const rooms = { eee: 'e' }
 
 
-app.get('/room',(req,res)=>{
-Object.keys(rooms).forEach(element => {
-});
+app.get('/room', (req, res) => {
+  Object.keys(rooms).forEach(element => {
+  });
 })
 
-app.post('/room',(req,res)=>{
+app.post('/room', (req, res) => {
   console.log(req.body);
-  // if(rooms[req.body] != null ){
+  // if(rooms[req.body] !== null ){
   //   rooms[req.body] = {users:{}}
   // }
 })
@@ -29,21 +29,21 @@ io.on('connection', (socket) => {
 
 
 
-  socket.on("m",e=>{
-    socket.broadcast.emit("m",e)
+  socket.on("m", e => {
+    socket.broadcast.emit("m", e)
     console.log("e");
   });
-  socket.on("mb",e=>{
-    socket.broadcast.emit("mb","")
+  socket.on("mb", e => {
+    socket.broadcast.emit("mb", "")
   });
 
-  socket.on("chat-msg",msg=>{
+  socket.on("chat-msg", msg => {
     Logger.addLog(msg)
-    socket.broadcast.emit("chat-msg",msg)
+    socket.broadcast.emit("chat-msg", msg)
   })
   // end of connect
 });
 
-http.listen("4001",()=>{
+http.listen("4001", () => {
   console.log('connected to 4001');
 })

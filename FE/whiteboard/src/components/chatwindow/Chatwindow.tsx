@@ -6,11 +6,11 @@ import React, {
 } from "react";
 import ChatMessage from "./ChatMessage";
 import "./Chatwindow.css";
-import {WinnerBannerContext} from '../../contexts/WinnerBannerProvider';
+import { WinnerBannerContext } from '../../contexts/WinnerBannerProvider';
 
 
-export const Chatwindow = ({ socket  , name}: any) => {
-  const [winner,setWinner] = useContext(WinnerBannerContext);
+export const Chatwindow = ({ socket, name }: any) => {
+  const [winner, setWinner] = useContext(WinnerBannerContext);
   const [chatInputText, setChatInputText] = useState("");
   const inputRef = createRef<HTMLTextAreaElement>();
   const messageContainerRef = createRef<HTMLDivElement>();
@@ -18,6 +18,7 @@ export const Chatwindow = ({ socket  , name}: any) => {
   const chatWindow = createRef<HTMLDivElement>();
 
   useEffect(() => {
+    //ovde idu socket eventi i kada stigne poruka ova komponenta se renderuje ponovvo sa novim porukama
     socket.on("chat-message", (msg: any) => {
       console.log(msg);
       appendMessages(msg);
@@ -29,7 +30,7 @@ export const Chatwindow = ({ socket  , name}: any) => {
   }, [messages]);
 
   const appendMessages = (msg: any) => {
-    if(msg.name === name) msg.name = "You";
+    if (msg.name === name) msg.name = "You";
     setMessages([...messages, msg]);
   };
   const chatInputHandle = (e: any) => {
@@ -39,7 +40,7 @@ export const Chatwindow = ({ socket  , name}: any) => {
     e.preventDefault();
     if (chatInputText) {
       const body = chatInputText;
-      const msg = {name,body};
+      const msg = { name, body };
       socket.emit("chat-message", msg);
       setChatInputText("");
       if (inputRef.current) inputRef.current.value = "";

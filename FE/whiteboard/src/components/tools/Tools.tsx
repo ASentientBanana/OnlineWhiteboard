@@ -6,7 +6,8 @@ import { ColorPalete } from "../colorPalete/ColorPalete";
 interface tools {
   canvasCtx: CanvasRenderingContext2D;
 }
-const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas,saveCanvasToDB, setDrawMode }: any) => {
+// ovde se nalaze paleta i dugmici/slajder koji pozivajvaju funkcije koje smo prosledili u kmponentu
+const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas, saveCanvasToDB, setDrawMode }: any) => {
   const sliderRef = createRef<HTMLInputElement>();
   useEffect(() => {
     if (sliderRef.current) {
@@ -36,6 +37,7 @@ const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas,saveCanvasToD
           ref={sliderRef}
         />
       </div>
+      {/* on click je event koji se zove kada kliknes... */}
       <div className="buttons-container">
         <a className="waves-effect waves-light btn" onClick={saveCanvas}>
           <i className="material-icons center">save</i>
@@ -54,7 +56,9 @@ const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas,saveCanvasToD
           <i className="material-icons center">brush</i>
         </a>
         <a className="waves-effect waves-light btn" onClick={() => {
-          setDrawMode('rectangle')
+          setDrawMode('rectangle-fill')
+          console.log('fill');
+
         }}>
           <i className="material-icons center">check_box_outline_blank</i>
         </a>

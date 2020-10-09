@@ -1,11 +1,11 @@
 import React, { useEffect, createRef, useContext, useState, InputHTMLAttributes } from "react";
 import "./Whiteboard.css";
 import { ColorContext } from "../../contexts/ColorContext";
-import whiteboardBuilder, { whiteboard } from "../../hooks/facadeWhiteboard";
+import whiteboardBuilder, { whiteboard } from "../../util/facadeWhiteboard";
 import Tools from "../tools/Tools";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-export const Whiteboard = ({ socket ,name}: any) => {
+export const Whiteboard = ({ socket, name }: any) => {
   const canvasRef = createRef<HTMLCanvasElement>();
   const whiteboardContainer = createRef<HTMLDivElement>();
   const drawingWordRef = createRef<HTMLInputElement>();
@@ -17,11 +17,12 @@ export const Whiteboard = ({ socket ,name}: any) => {
   const [isClicked, setIsClicked] = useState<boolean>(false);
   const [drawMode, setDrawMode] = useState<string>('line');
 
+
   let tmp: whiteboard;
   useEffect(() => {
-    socket.emit('set_name',name)
-  
-    socket.on('isOwner', (e: number) => {
+    socket.emit('set_name', name) // salje se serveru ime preko soketa
+
+    socket.on('isOwner', (e: number) => {// is owner event se aktivira ako server posalje is oWner i setuje da si owner...
       if (e === 200) {
         setIsOwner(true);
       }
@@ -31,11 +32,11 @@ export const Whiteboard = ({ socket ,name}: any) => {
         .withHeight(whiteboardContainer.current.clientHeight)
         .withWidth(whiteboardContainer.current.clientWidth)
         .withBackgroundColor("#ebe4e4")
-        .build();
+        .build();// Ovo je pozib buildera koji ce da setuje potrebne stvari canvasu
     setMyCanvas(tmp);
   }, []);
 
-  const startPos = (e: any) => {
+  const startPos = (e: any) => {// ovo se poziva kada se kliken na canvas
     myCanvas?.clearShapeArray()
     setIsClicked(true);
     setDrawing(true);
@@ -44,13 +45,18 @@ export const Whiteboard = ({ socket ,name}: any) => {
     draw(e, true, isOwner);
   };
 
-  const endPos = () => {
+  const endPos = (e: any) => {// ovo se poziva kada se zavrsi  klik na canvas
     setIsClicked(true);
     setDrawing(false);
     myCanvas?.clearShapeArray();
+    console.log(e);
+    const [offsetX, offsetY] = getOffset(e.clientX, e.clientY, myCanvas!.canvas);
+
+    socket.emit("reset-line", [offsetX, offsetY])
+
   };
 
-  const getOffset = (
+  const getOffset = (// metoda za racunjane offseta canvasa da u odnosu na stranu da ne bi bilo ofseta kada se crta
     clientX: number,
     clientY: number,
     canvas: HTMLCanvasElement
@@ -60,7 +66,7 @@ export const Whiteboard = ({ socket ,name}: any) => {
     const offsetY = clientY - canvas.offsetTop + scrollY;
     return [offsetX, offsetY]
   }
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>, isLocal: boolean, isOwner: boolean) => {
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>, isLocal: boolean, isOwner: boolean) => { // funkcija za crtanje
     if (!drawing && isLocal) return;
     isOwner = true; //izbaci ovo
     if (myCanvas && isOwner && isClicked) {
@@ -77,19 +83,32 @@ export const Whiteboard = ({ socket ,name}: any) => {
 
         socket.emit("draw", data);
       } else {
+
         const { clientX, clientY, color, lineWidth, drawMode }: any = e;
+        console.log(drawMode);
         if (drawMode === "line") {
-          myCanvas.draw(clientX, clientY, { color, lineWidth, lineCap: 'round' });
+          myCanvas.draw(clientX, clientY, { color, lineWidth, lineCap: 'round' });//ako se crta cetkicom tj samo linija poziva se ovo
+          console.log('draw-Line');
+
         }
         else {
-          myCanvas.drawShape(clientX, clientY, { color, lineWidth: lineWidth, shape: "rectangle" });
+          myCanvas.drawShape(clientX, clientY, { color, lineWidth: lineWidth, shape: "rectangle-fill" });//ako se crta geometrijski oblik poziva se ovo
+          console.log('draw-fill');
         }
       }
     };
   }
-  socket.on("draw", (e: any) => {
+  socket.on("draw", (e: any) => { //salje se draw event serveru 
     draw(e, false, true);
+    console.log("draw");
   });
+  socket.on("reset-line", (e: number[]) => {
+    const [positionX, positionY] = e;
+    console.log('e');
+    myCanvas?.ctx?.moveTo(positionX, positionY);
+
+
+  })
   const clearCanvas = () => {
     myCanvas?.clearCanvas();
   }
@@ -105,13 +124,13 @@ export const Whiteboard = ({ socket ,name}: any) => {
     myCanvas?.saveWhiteboard('jpg')
   }
 
-  const saveCanvasToDB = () =>{
+  const saveCanvasToDB = () => {
     const image = myCanvas?.saveWhiteboard('jpg')
-    socket.emit("save-image-to-database",{image,userName:name})
+    socket.emit("save-image-to-database", { image, userName: name })
   }
 
-  const submitWord = () => {
-    if (drawingWordRef.current?.value != "" && drawingWordRef.current) {
+  const submitWord = () => { // salje se rec koju mora da pogodi neko
+    if (drawingWordRef.current?.value !== "" && drawingWordRef.current) {
       socket.emit("update-word", drawingWordRef.current.value);
       drawingWordRef.current.value = "";
     }
@@ -133,9 +152,7 @@ export const Whiteboard = ({ socket ,name}: any) => {
         <canvas
           ref={canvasRef}
           onMouseDown={startPos}
-          onMouseUp={() => {
-            endPos();
-          }}
+          onMouseUp={endPos}
           onMouseLeave={() => {
             setDrawing(false);
           }}
@@ -147,7 +164,7 @@ export const Whiteboard = ({ socket ,name}: any) => {
           }}
         ></canvas>
       </div>
-      <Tools
+      <Tools // Ovde prosledjujemo parametre komponenti tools da bi imala pristup  
         canvasContext={clearCanvas}
         brushSize={brushSizeSet}
         paintCanvas={paintCanvas}
@@ -157,7 +174,7 @@ export const Whiteboard = ({ socket ,name}: any) => {
       />
       <div>
         <div className='gallery-btn-div'>
-          <Link to={`${name}/gallery`}  className="waves-effect waves-light btn "><i className="material-icons center">burst_mode</i>  gallery</Link>
+          <Link to={`${name}/gallery`} className="waves-effect waves-light btn "><i className="material-icons center">burst_mode</i>gallery</Link>
         </div>
         <div className="col s12 word-input">
           Write what you are drawing here:

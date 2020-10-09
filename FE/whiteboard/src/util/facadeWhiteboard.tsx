@@ -13,6 +13,9 @@ interface IShapeDrawingOptions {
   lineWidth: number,
   shape: string
 }
+
+// Ovde smo def interfejse za objektekoje koristimo za crtanje
+
 export class whiteboard {
 
   ctx: CanvasRenderingContext2D | null;
@@ -49,7 +52,7 @@ export class whiteboard {
   }
 
 
-  setCanvasImageData() {
+  setCanvasImageData() { // setuje trenutno  stanje canvasa u promenjivu canvasImageData
     this.canvasImageData = this.ctx?.getImageData(0, 0, this.canvas.width, this.canvas.height)
     this.imgData = this.canvasImageData;
   }
@@ -68,6 +71,7 @@ export class whiteboard {
   }
 
   drawShape(positionX: number, positionY: number, { color = "#000000", lineWidth = 1, shape = "rectangle" }: IShapeDrawingOptions) {
+    //Metoda za crtanje oblika 
     this.shapeArray.push({ positionX, positionY })
     if (!this.canvasImageData) this.canvasImageData = this.imgData;
     this.canvasImageData = this.ctx?.putImageData(this.canvasImageData, 0, 0);
@@ -77,20 +81,24 @@ export class whiteboard {
     const startPosY = this.shapeArray[0].positionY;
     const currPosX = positionX - startPosX;
     const currPosY = positionY - startPosY;
-    console.log(this.shapeArray);
 
     if (shape === "rectangle") {
-      this.drawRectangle(startPosX, startPosY, currPosX, currPosY);
+      this.drawRectangle(startPosX, startPosY, currPosX, currPosY, false, color);
     }
-    else if (shape === "triangle") { }
-
-
+    else if (shape === "rectangle-fill") {
+      this.drawRectangle(startPosX, startPosY, currPosX, currPosY, true, color);
+    }
 
     this.ctx!.stroke();
     return { positionX, positionY, data }
   }
-  private drawRectangle(startX: number, startY: number, endPosX: number, endPosY: number) {
-    this.ctx!.rect(startX, startY, endPosX, endPosY);
+  private drawRectangle(startX: number, startY: number, endPosX: number, endPosY: number, isFill: boolean, color: string) {
+    if (isFill) {
+      this.ctx!.rect(startX, startY, endPosX, endPosY);
+    } else {
+      this.ctx!.fillStyle = this.color;
+      this.ctx!.fillRect(startX, startY, endPosX, endPosY);
+    }
   }
   private drawCircle(startPosX: number, startPosY: number, currPosX: number, currPosY: number = 0) {
     const x = Math.pow(currPosX - startPosX, 2);
@@ -99,7 +107,7 @@ export class whiteboard {
     this.ctx!.arc(startPosX, startPosY, diameter, 0, 2 * Math.PI, false)
   }
 
-  clearCanvas() {
+  clearCanvas() { // Ова функција клирује канвас
     this.ctx!.clearRect(
       0,
       0,
@@ -113,7 +121,7 @@ export class whiteboard {
     this.ctx!.fillStyle = 'green';
     this.ctx!.fillRect(positionX, positionY, 2, 2);
   }
-  saveWhiteboard(imageFormat: string) {
+  saveWhiteboard(imageFormat: string) {//konveruje sliku u base 64 i pita korisnika da li bi da download
     const data = this.canvas.toDataURL('image/jpeg', 1.0);
     console.log(data);
     const a = document.createElement('a');
@@ -122,16 +130,6 @@ export class whiteboard {
     a.click();
     return data
   }
-
-  // readTheFile(file:any) {
-  //   const reader = new FileReader();
-  //   return new Promise((resolve) => {
-  //     reader.onload = (event) => {
-  //       resolve(event.target.result);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   })
-  // }
 
 }
 class whiteboardBuilder {

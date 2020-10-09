@@ -24,7 +24,7 @@ app.use(express.json());
 http.listen("4000", () => {
   console.log('connected to 4000');
 });
-app.listen('4001',()=>{
+app.listen('4001', () => {
   console.log('connected to express 4001');
 })
 
@@ -34,9 +34,9 @@ const rooms: any = {
 }//objekat gde se pamte sobe i useri
 const users: any = {}
 
-db.authenticate()// povezuje sa bazom i radi autentikaciju
-  .then(() => console.log('connected to DB'))//u slucaju uspeha 
-  .catch((e: any) => { console.log(`ERR :: ${e}`) })//u slucaju error-a
+// db.authenticate()// povezuje sa bazom i radi autentikaciju
+//   .then(() => console.log('connected to DB'))//u slucaju uspeha 
+//   .catch((e: any) => { console.log(`ERR :: ${e}`) })//u slucaju error-a
 
 
 socketIO.on('connection', (socket: any) => { //event sta se desava kada se konektuje na socket
@@ -54,6 +54,8 @@ socketIO.on('connection', (socket: any) => { //event sta se desava kada se konek
   socket.on('draw', (e: any) => {//soket koji prosledjuje koordinate crteza svima u sobi
     // LoggerSingleton.logs.colors.push(e.color)
     socket.to(rooms[socket.id]).emit('draw', e)//event ime je draw
+    console.log("drawing");
+
   });
 
   socket.on('update-word', (word: string) => {
@@ -61,6 +63,10 @@ socketIO.on('connection', (socket: any) => { //event sta se desava kada se konek
       rooms[rooms[socket.id]]["word"] = word;
     }
   });
+
+  socket.on("reset-line", (e: number[]) => {
+    socket.emit('reset-line', e)
+  })
 
   socket.on('chat-message', (msg: any) => {//prosledjuju se poruke
     console.log(DBUtility.getUserIdByName("testUser1"));
@@ -122,21 +128,21 @@ const roomJoinHandlerFacade = (socket: any, room_name: string) => {
   }
 }
 
-app.get('/getme/:name',(req:any,res:any)=>{
+app.get('/getme/:name', (req: any, res: any) => {
   console.log(req.params.name);
   DBUtility.getUserIdByName(req.params.name)
-      .then((user: any) => {
-        if(user){
-          DBUtility.getImagesForUser(user.dataValues.id)
+    .then((user: any) => {
+      if (user) {
+        DBUtility.getImagesForUser(user.dataValues.id)
           .then((data: any) => {
             res.send({ data })
           })
           .catch((e: string) => {
             console.log(e);
           })
-        }
-      })
-      .catch((e: string) => {
-        console.log(e);
-      })
+      }
+    })
+    .catch((e: string) => {
+      console.log(e);
+    })
 })

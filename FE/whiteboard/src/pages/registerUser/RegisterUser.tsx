@@ -6,8 +6,6 @@ export const RegisterUser = ({ socket }: any) => {
   const [name, setName] = useState<string>("Jane Doe");
   const [roomName, setRoomName] = useState<string>("Jane Doe");
   const [nameCtx, setNameCtx] = useContext(NameContext);
-  const submit = () => { };
-
   return (
     <div className="container center register-user-page-container">
       <h1>Online Pantomime</h1>
@@ -33,7 +31,7 @@ export const RegisterUser = ({ socket }: any) => {
         }}>
           <div className="waves-effect waves-light btn join-btn" onClick={() => {
             setNameCtx(name);
-            socket.emit('join_room', roomName)
+            socket.emit('join_room', roomName) //salje event join room serveru i objekat koji sadrzi imei sobu u koju bi da udje korisnik
           }}><i className="material-icons left">brush</i>Join/Create  Room</div>
         </Link>
       </form>
