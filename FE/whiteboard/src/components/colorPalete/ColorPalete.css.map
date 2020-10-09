@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAAA,uBAAuB,CAAA;EACnB,OAAO,EAAE,IAAI;EACb,qBAAqB,EAAE,cAAa;EACpC,OAAO,EAAE,IAAI;CAQhB;;AAXD,AAII,uBAJmB,CAInB,UAAU,CAAA;EACN,MAAM,EAAE,IAAI;EACZ,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,OAAO;EACf,aAAa,EAAE,GAAG;EAClB,MAAM,EAAE,KAAK,CAAE,GAAG,CCNf,OAAO;CDOb",
+    "sources": [
+        "ColorPalete.scss",
+        "../../assets/Colors.scss"
+    ],
+    "names": [],
+    "file": "ColorPalete.css"
+}

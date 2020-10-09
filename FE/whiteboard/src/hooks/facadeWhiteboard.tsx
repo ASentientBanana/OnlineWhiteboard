@@ -28,7 +28,7 @@ export class whiteboard {
     this.ctx = canvas.getContext('2d');
     this.color = "#000000";
     this.shapeArray = [];
-    this.defaultCanvasColor = "#d8c1c1"
+    this.defaultCanvasColor = "#ebe4e4"
   }
 
   draw(positionX: number, positionY: number, { color, lineWidth = 50, lineCap = 'round' }: IDrawingOptions) {
@@ -79,10 +79,10 @@ export class whiteboard {
     const currPosY = positionY - startPosY;
     console.log(this.shapeArray);
 
-    if (shape == "rectangle") {
+    if (shape === "rectangle") {
       this.drawRectangle(startPosX, startPosY, currPosX, currPosY);
     }
-    else if (shape == "triangle") { }
+    else if (shape === "triangle") { }
 
 
 

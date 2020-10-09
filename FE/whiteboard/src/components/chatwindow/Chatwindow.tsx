@@ -29,7 +29,7 @@ export const Chatwindow = ({ socket  , name}: any) => {
   }, [messages]);
 
   const appendMessages = (msg: any) => {
-    if(msg.name == name) msg.name = "You";
+    if(msg.name === name) msg.name = "You";
     setMessages([...messages, msg]);
   };
   const chatInputHandle = (e: any) => {
@@ -91,7 +91,7 @@ export const Chatwindow = ({ socket  , name}: any) => {
             </button>
             <button
               type="button"
-              className=" cancel waves-effect waves-light btn-large "
+              className=" waves-effect waves-light btn-large cancel"
               onClick={closeChatWindow}
             >
               Close

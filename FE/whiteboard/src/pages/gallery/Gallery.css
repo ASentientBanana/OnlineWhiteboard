@@ -1,1 +1,9 @@
-/* No CSS */
+.gallery-image-container {
+  padding-top: 5vh;
+}
+
+.gallery-image-container img {
+  border: #8a5273 solid 15px;
+  border-radius: 15px;
+}
+/*# sourceMappingURL=Gallery.css.map */

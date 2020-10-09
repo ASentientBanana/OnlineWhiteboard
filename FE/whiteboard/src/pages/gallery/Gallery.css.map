@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "AACA,AAAA,wBAAwB,CAAA;EACpB,WAAW,EAAE,GAAG;CASnB;;AAVD,AAEI,wBAFoB,CAEpB,GAAG,CAAA;EAEC,MAAM,ECHF,OAAO,CDGU,KAAK,CAAC,IAAI;EAI/B,aAAa,EAAE,IAAI;CACtB",
+    "sources": [
+        "Gallery.scss",
+        "../../assets/Colors.scss"
+    ],
+    "names": [],
+    "file": "Gallery.css"
+}

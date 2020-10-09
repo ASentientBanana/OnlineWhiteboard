@@ -25,6 +25,7 @@
   background-color: #580838;
   width: 100% !important;
   border-radius: 10px;
+  font-family: acme-regular !important;
 }
 
 .tool-container .clear-btn:hover {
@@ -34,10 +35,16 @@
 .tool-container .buttons-container {
   width: 100%;
   margin-top: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .tool-container .buttons-container a {
-  width: 50%;
+  width: 100%;
   background-color: #580838;
   border-radius: 10px;
 }
@@ -46,3 +53,4 @@
   border: none;
   color: #580838;
 }
+/*# sourceMappingURL=Tools.css.map */

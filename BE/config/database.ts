@@ -1,8 +1,7 @@
 const Sequalize = require('sequelize');
 
-module.exports = new Sequalize('whiteboardDB','postgres','lazy',{
-  host:'192.168.0.201',
-  // port:9465,
+module.exports = new Sequalize('whiteboard','postgres','lazy',{
+  host:'localhost',
   dialect:'postgres',
   operatorsAliases:'false',
   pool:{

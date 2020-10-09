@@ -1,0 +1,12 @@
+@import '../../assets/Colors.scss';
+.gallery-image-container{
+    padding-top: 5vh;
+    img{
+        // border:solid 10px pink;
+        border:  $main-light solid 15px;
+        // border-image-source: url('../../assets/images/SARAA.jpg');
+        // border-image-slice: 40;
+        // border-image-repeat: stretch;
+        border-radius: 15px;
+    }
+}

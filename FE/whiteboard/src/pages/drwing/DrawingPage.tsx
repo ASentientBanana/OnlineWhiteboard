@@ -14,7 +14,7 @@ export const DrawingPage = ({ socket }: any) => {
       <WinnerBanner />
       <div className="container center drawing-page-container">
         <div className="">
-          <Whiteboard socket={socket} />
+          <Whiteboard socket={socket} name={name}/>
         </div>
         <Chatwindow socket={socket} name={name} />
       </div>

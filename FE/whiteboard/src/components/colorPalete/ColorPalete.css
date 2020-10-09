@@ -10,5 +10,7 @@
   height: 50px;
   width: 50px;
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: 10%;
+  border: solid 5px #580838;
 }
+/*# sourceMappingURL=ColorPalete.css.map */

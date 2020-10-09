@@ -74,12 +74,15 @@
   .btn-container {
     display: flex;
     justify-content: space-around;
+    .btn, .btn-large, .btn-small{
+      background-color: "#ffcc66" !important;//jebi ovo 
+    }
     .cancel {
-      background-color: $grey;
+      background-color: "#ffcc66";
       border-radius: 8%;
     }
     .send {
-      background-color: $main;
+      background-color: "#ffcc66";
       border: rgba(255, 255, 255, 0.226) 1px solid;
       border-radius: 8%;
     }
@@ -101,6 +104,8 @@
   right: 28px;
   width: 280px;
   background-color: $main-dark;
+  font-family: acme-regular !important;
+
 }
 
 .open-button:hover {

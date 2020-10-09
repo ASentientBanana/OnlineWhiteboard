@@ -1,4 +1,4 @@
-import React,{useState,useContext, useEffect} from 'react';
+import React,{useContext, useEffect} from 'react';
 import {WinnerBannerContext} from '../../contexts/WinnerBannerProvider';
 import {NameContext} from '../../contexts/NameProvider';
 const WinnerBanner = () =>{
@@ -9,7 +9,7 @@ const WinnerBanner = () =>{
     
   },[winner]);
   const win = ():string =>{
-    if(winner != ''){
+    if(winner !== ''){
       if(winner === name) {return `YOU WIN !!!`}
     else{
       return `${winner} WINS!! ` 

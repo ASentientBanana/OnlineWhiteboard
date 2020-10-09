@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAAA,IAAI,CAAA;EAEA,gBAAgB,EAAE,gCAAgC;CAErD;;AAED,UAAU;EACN,WAAW,EAAE,YAAY;EACzB,GAAG,EAAE,sCAAsC;;;AAE/C,AAAA,CAAC,CAAA;EACG,WAAW,EAAE,YAAY;CAC5B",
+    "sources": [
+        "App.scss",
+        "assets/Colors.scss"
+    ],
+    "names": [],
+    "file": "App.css"
+}

@@ -3,8 +3,9 @@ import "./Whiteboard.css";
 import { ColorContext } from "../../contexts/ColorContext";
 import whiteboardBuilder, { whiteboard } from "../../hooks/facadeWhiteboard";
 import Tools from "../tools/Tools";
+import {Link} from 'react-router-dom';
 
-export const Whiteboard = ({ socket }: any) => {
+export const Whiteboard = ({ socket ,name}: any) => {
   const canvasRef = createRef<HTMLCanvasElement>();
   const whiteboardContainer = createRef<HTMLDivElement>();
   const drawingWordRef = createRef<HTMLInputElement>();
@@ -18,9 +19,10 @@ export const Whiteboard = ({ socket }: any) => {
 
   let tmp: whiteboard;
   useEffect(() => {
-    socket.on('isOwner', (e: any) => {
-      console.log(e);
-      if (e == 200) {
+    socket.emit('set_name',name)
+  
+    socket.on('isOwner', (e: number) => {
+      if (e === 200) {
         setIsOwner(true);
       }
     });
@@ -28,7 +30,7 @@ export const Whiteboard = ({ socket }: any) => {
       tmp = new whiteboardBuilder(canvasRef.current)
         .withHeight(whiteboardContainer.current.clientHeight)
         .withWidth(whiteboardContainer.current.clientWidth)
-        .withBackgroundColor("#d8c1c1")
+        .withBackgroundColor("#ebe4e4")
         .build();
     setMyCanvas(tmp);
   }, []);
@@ -100,7 +102,12 @@ export const Whiteboard = ({ socket }: any) => {
   };
 
   const saveCanvas = () => {
-    const b = myCanvas?.saveWhiteboard('jpg')
+    myCanvas?.saveWhiteboard('jpg')
+  }
+
+  const saveCanvasToDB = () =>{
+    const image = myCanvas?.saveWhiteboard('jpg')
+    socket.emit("save-image-to-database",{image,userName:name})
   }
 
   const submitWord = () => {
@@ -112,6 +119,7 @@ export const Whiteboard = ({ socket }: any) => {
   const setDrawingMode = (mode: string) => {
     setDrawMode(mode);
   }
+
 
   window.addEventListener('mouseup', () => {
     setIsClicked(false);
@@ -145,10 +153,14 @@ export const Whiteboard = ({ socket }: any) => {
         paintCanvas={paintCanvas}
         saveCanvas={saveCanvas}
         setDrawMode={setDrawingMode}
+        saveCanvasToDB={saveCanvasToDB}
       />
       <div>
+        <div className='gallery-btn-div'>
+          <Link to={`${name}/gallery`}  className="waves-effect waves-light btn "><i className="material-icons center">burst_mode</i>  gallery</Link>
+        </div>
         <div className="col s12 word-input">
-          Wtite what you are drawing here:
+          Write what you are drawing here:
             <div className="input-field inline">
             <input id="drawing_word" type="text" className="validate" ref={drawingWordRef} />
             <span className="helper-text" data-error="wrong" data-success="right">Owner only</span>

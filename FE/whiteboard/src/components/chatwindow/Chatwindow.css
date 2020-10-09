@@ -90,13 +90,17 @@
       justify-content: space-around;
 }
 
+#chat-container .btn-container .btn, #chat-container .btn-container .btn-large, #chat-container .btn-container .btn-small {
+  background-color: "#ffcc66" !important;
+}
+
 #chat-container .btn-container .cancel {
-  background-color: #aaaaaa;
+  background-color: "#ffcc66";
   border-radius: 8%;
 }
 
 #chat-container .btn-container .send {
-  background-color: #aaaaaa;
+  background-color: "#ffcc66";
   border: rgba(255, 255, 255, 0.226) 1px solid;
   border-radius: 8%;
 }
@@ -118,8 +122,10 @@
   right: 28px;
   width: 280px;
   background-color: #580838;
+  font-family: acme-regular !important;
 }
 
 .open-button:hover {
   background-color: #8a5273;
 }
+/*# sourceMappingURL=Chatwindow.css.map */

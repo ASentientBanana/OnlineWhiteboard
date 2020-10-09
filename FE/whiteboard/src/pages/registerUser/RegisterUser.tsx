@@ -10,7 +10,7 @@ export const RegisterUser = ({ socket }: any) => {
 
   return (
     <div className="container center register-user-page-container">
-      <h1>whiteboard</h1>
+      <h1>Online Pantomime</h1>
       <form action='/room' method='POST' >
         <label htmlFor="username"><h4>Enter user name</h4></label>
         <input

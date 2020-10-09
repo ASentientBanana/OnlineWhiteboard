@@ -1,13 +1,12 @@
 import React, { useEffect, createRef } from "react";
 import "./Tools.css";
 import { ColorPalete } from "../colorPalete/ColorPalete";
-import bucket from "../../assets/images/paint-bucket.png";
-import saveIcon from "../../assets/images/save.png";
+
 
 interface tools {
   canvasCtx: CanvasRenderingContext2D;
 }
-const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas, setDrawMode }: any) => {
+const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas,saveCanvasToDB, setDrawMode }: any) => {
   const sliderRef = createRef<HTMLInputElement>();
   useEffect(() => {
     if (sliderRef.current) {
@@ -40,6 +39,9 @@ const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas, setDrawMode 
       <div className="buttons-container">
         <a className="waves-effect waves-light btn" onClick={saveCanvas}>
           <i className="material-icons center">save</i>
+        </a>
+        <a className="waves-effect waves-light btn" onClick={saveCanvasToDB}>
+          <i className="material-icons center">cloud_upload</i>
         </a>
         <a className="waves-effect waves-light btn" onClick={paintCanvas}>
           <i className="material-icons center">format_paint</i>
