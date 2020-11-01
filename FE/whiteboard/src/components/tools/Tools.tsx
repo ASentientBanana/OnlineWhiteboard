@@ -51,16 +51,19 @@ const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas, saveCanvasTo
       </div>
       <div className="buttons-container">
         <a className="waves-effect waves-light btn" onClick={() => {
-          setDrawMode('line')
+          setDrawMode(0)
         }}>
           <i className="material-icons center">brush</i>
         </a>
         <a className="waves-effect waves-light btn" onClick={() => {
-          setDrawMode('rectangle-fill')
-          console.log('fill');
-
+          setDrawMode(1)
         }}>
           <i className="material-icons center">check_box_outline_blank</i>
+        </a>
+        <a className="waves-effect waves-light btn" onClick={() => {
+          setDrawMode(2)
+        }}>
+          <i className="material-icons center">dashboard</i>
         </a>
       </div>
     </div>

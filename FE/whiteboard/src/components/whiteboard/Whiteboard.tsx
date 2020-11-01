@@ -1,7 +1,8 @@
 import React, { useEffect, createRef, useContext, useState, InputHTMLAttributes } from "react";
 import "./Whiteboard.css";
 import { ColorContext } from "../../contexts/ColorContext";
-import whiteboardBuilder, { whiteboard } from "../../util/facadeWhiteboard";
+import WhiteboardBuilder from './util/WhiteboardBuilder'
+import WhiteboardFacade  from './util/facadeWhiteboard';
 import Tools from "../tools/Tools";
 import { Link } from 'react-router-dom';
 
@@ -11,51 +12,89 @@ export const Whiteboard = ({ socket, name }: any) => {
   const drawingWordRef = createRef<HTMLInputElement>();
   const [color, setColor] = useContext(ColorContext);
   const [lineWidth, setLineWidth] = useState(1);
-  const [myCanvas, setMyCanvas] = useState<whiteboard>();
+  const [myCanvas, setMyCanvas] = useState<WhiteboardFacade>();
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [drawing, setDrawing] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean>(false);
-  const [drawMode, setDrawMode] = useState<string>('line');
+  const [drawMode, setDrawMode] = useState<number>(0);
+  const [shapeStartPositions,setStartPositions] = useState<number[]>();
 
-
-  let tmp: whiteboard;
+  let tmp: WhiteboardFacade;
   useEffect(() => {
     socket.emit('set_name', name) // salje se serveru ime preko soketa
+    if (canvasRef.current && whiteboardContainer.current)
+    if(myCanvas === undefined) setMyCanvas(new WhiteboardBuilder(canvasRef.current)
+        .withHeight(whiteboardContainer.current.clientHeight)
+        .withWidth(whiteboardContainer.current.clientWidth)
+        .withBackgroundColor("#ebe4e4")
+        .build());// Ovo je poziv buildera koji ce da setuje potrebne stvari canvasu
+    //   if(myCanvas === undefined)
+    // ^^^^ ovo je provera da li postoji myCanvas, moramo ovo da proverimo jer je asynhrono i ako ne postoji komponenta se renderuje ponovo
+    socketListenerEvents();
 
+    
+  }, [myCanvas]);
+
+  const socketListenerEvents = ()=>{
     socket.on('isOwner', (e: number) => {// is owner event se aktivira ako server posalje is oWner i setuje da si owner...
       if (e === 200) {
         setIsOwner(true);
       }
     });
-    if (canvasRef.current && whiteboardContainer.current)
-      tmp = new whiteboardBuilder(canvasRef.current)
-        .withHeight(whiteboardContainer.current.clientHeight)
-        .withWidth(whiteboardContainer.current.clientWidth)
-        .withBackgroundColor("#ebe4e4")
-        .build();// Ovo je pozib buildera koji ce da setuje potrebne stvari canvasu
-    setMyCanvas(tmp);
-  }, []);
+    socket.on("draw", (e: any) => { //salje se draw event serveru 
+      console.log('DD');
+      draw(e, false, true);
+    });
+    socket.on("draw-shape", (e: any) => { //salje se draw-shape event serveru 
+      serverShapeHandler(e);
+    });
+    socket.on("reset-line", (e: number[]) => {
+      const [positionX, positionY] = e;
+      myCanvas?.ctx?.moveTo(positionX, positionY);
+    })
+  }
 
   const startPos = (e: any) => {// ovo se poziva kada se kliken na canvas
     myCanvas?.clearShapeArray()
     setIsClicked(true);
     setDrawing(true);
-    myCanvas?.ctx?.beginPath();
     myCanvas?.setCanvasImageData();
-    draw(e, true, isOwner);
+    if(drawMode != 0 ) {
+      localShapeHandler(e); 
+      const [offsetX, offsetY] = getOffset(e.clientX, e.clientY, myCanvas!.canvas);
+      setStartPositions([offsetX,offsetY])
+    }
   };
 
   const endPos = (e: any) => {// ovo se poziva kada se zavrsi  klik na canvas
+    if(!drawing) return;
     setIsClicked(true);
-    setDrawing(false);
     myCanvas?.clearShapeArray();
-    console.log(e);
-    const [offsetX, offsetY] = getOffset(e.clientX, e.clientY, myCanvas!.canvas);
-
-    socket.emit("reset-line", [offsetX, offsetY])
-
+    if(shapeStartPositions){
+      const startX = shapeStartPositions[0];
+      const startY = shapeStartPositions[1]
+      const [endOffsetX, endOffsetY] = getOffset(e.clientX, e.clientY, myCanvas!.canvas);
+      socket.emit('draw-shape',{startX,startY,endOffsetX, endOffsetY,color,lineWidth,shape:drawMode});
+    }
+      // socket.emit("reset-line", [offsetX, offsetY])
+      setDrawing(false);
+      setIsClicked(false);
   };
 
+const localShapeHandler = (drawEvent:any) => {
+  if(!drawing) return;
+  const [endOffsetX, endOffsetY] = getOffset(drawEvent.clientX, drawEvent.clientY, myCanvas!.canvas);
+  if(shapeStartPositions) myCanvas?.drawShape(shapeStartPositions[0],shapeStartPositions[1],endOffsetX, endOffsetY,{color,lineWidth,shape:drawMode,isLocal:true});
+}
+
+const serverShapeHandler = (drawShapeEvent:any) => {
+  const options:any = {}
+  options["color"] = drawShapeEvent.color;
+  options["lineWidth"] = drawShapeEvent.lineWidth;
+  options["shape"] = drawShapeEvent.shape;
+  options["isLocal"] = false;
+  myCanvas?.drawShape(drawShapeEvent.startX,drawShapeEvent.startY,drawShapeEvent.endOffsetX,drawShapeEvent.endOffsetY,options);
+}
   const getOffset = (// metoda za racunjane offseta canvasa da u odnosu na stranu da ne bi bilo ofseta kada se crta
     clientX: number,
     clientY: number,
@@ -66,83 +105,34 @@ export const Whiteboard = ({ socket, name }: any) => {
     const offsetY = clientY - canvas.offsetTop + scrollY;
     return [offsetX, offsetY]
   }
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>, isLocal: boolean, isOwner: boolean) => { // funkcija za crtanje
-    if (!drawing && isLocal) return;
-    isOwner = true; //izbaci ovo
-    if (myCanvas && isOwner && isClicked) {
-      if (isLocal) {
-        const [offsetX, offsetY] = getOffset(e.clientX, e.clientY, myCanvas.canvas);
-        let data: any;
-        if (drawMode === "line") {
-          data = myCanvas.draw(offsetX, offsetY, { color, lineWidth, lineCap: 'round' });
-        }
-        else {
-          data = myCanvas.drawShape(offsetX, offsetY, { color, lineWidth, shape: "rectangle" });
-        }
-        data['drawMode'] = drawMode;
-
-        socket.emit("draw", data);
-      } else {
-
-        const { clientX, clientY, color, lineWidth, drawMode }: any = e;
-        console.log(drawMode);
-        if (drawMode === "line") {
-          myCanvas.draw(clientX, clientY, { color, lineWidth, lineCap: 'round' });//ako se crta cetkicom tj samo linija poziva se ovo
-          console.log('draw-Line');
-
-        }
-        else {
-          myCanvas.drawShape(clientX, clientY, { color, lineWidth: lineWidth, shape: "rectangle-fill" });//ako se crta geometrijski oblik poziva se ovo
-          console.log('draw-fill');
-        }
+  const draw = (e: React.MouseEvent<HTMLCanvasElement>,isLocal: boolean,isOwner: boolean) => { // funkcija za crtanje
+    if (isLocal) {
+      isOwner = true;
+      if (!drawing || !isClicked) return;
+      const [offsetX, offsetY] = getOffset(e.clientX, e.clientY, myCanvas!.canvas);
+      let data: any;
+      if (drawMode === 0) data = myCanvas!.draw(offsetX, offsetY, { color, lineWidth, lineCap: 'round' });
+      if(data) data.drawMode = drawMode;
+      if(drawMode == 0) socket.emit("draw", data);
+    }
+    else {
+      if(myCanvas){
+        console.log('cloud');
+        const { clientX, clientY, color, lineWidth }: any = e;
+        myCanvas.draw(clientX, clientY, { color, lineWidth, lineCap: 'round' });//ako se crta cetkicom tj samo linija poziva se ovo
       }
-    };
+    }
   }
-  socket.on("draw", (e: any) => { //salje se draw event serveru 
-    draw(e, false, true);
-    console.log("draw");
-  });
-  socket.on("reset-line", (e: number[]) => {
-    const [positionX, positionY] = e;
-    console.log('e');
-    myCanvas?.ctx?.moveTo(positionX, positionY);
-
-
-  })
-  const clearCanvas = () => {
-    myCanvas?.clearCanvas();
-  }
-
-  const paintCanvas = () => {
-    myCanvas?.paintCanvas(color);
-  };
-  const brushSizeSet = (e: any) => {
-    setLineWidth(e);
-  };
-
-  const saveCanvas = () => {
-    myCanvas?.saveWhiteboard('jpg')
-  }
-
   const saveCanvasToDB = () => {
-    const image = myCanvas?.saveWhiteboard('jpg')
+    const image = myCanvas?.saveWhiteboard();
     socket.emit("save-image-to-database", { image, userName: name })
   }
-
   const submitWord = () => { // salje se rec koju mora da pogodi neko
     if (drawingWordRef.current?.value !== "" && drawingWordRef.current) {
       socket.emit("update-word", drawingWordRef.current.value);
       drawingWordRef.current.value = "";
     }
   }
-  const setDrawingMode = (mode: string) => {
-    setDrawMode(mode);
-  }
-
-
-  window.addEventListener('mouseup', () => {
-    setIsClicked(false);
-  })
   return (
     <div>
       <div
@@ -153,23 +143,24 @@ export const Whiteboard = ({ socket, name }: any) => {
           ref={canvasRef}
           onMouseDown={startPos}
           onMouseUp={endPos}
-          onMouseLeave={() => {
-            setDrawing(false);
+          onMouseLeave={(e) => {
+            if(drawing){
+              endPos(e);
+              setDrawing(false);
+            }
           }}
-          onMouseEnter={() => {
-            setDrawing(true);
-          }}
-          onMouseMove={e => {
-            draw(e, true, isOwner);
-          }}
+          onMouseMove={e =>{
+          if(drawMode === 0) draw(e, true, isOwner);
+          if(drawMode !== 0) localShapeHandler(e)  
+        }}
         ></canvas>
       </div>
       <Tools // Ovde prosledjujemo parametre komponenti tools da bi imala pristup  
-        canvasContext={clearCanvas}
-        brushSize={brushSizeSet}
-        paintCanvas={paintCanvas}
-        saveCanvas={saveCanvas}
-        setDrawMode={setDrawingMode}
+        canvasContext={()=>myCanvas?.clearCanvas()}
+        brushSize={setLineWidth}
+        paintCanvas={()=>myCanvas?.paintCanvas(color)}
+        saveCanvas={()=>myCanvas?.saveWhiteboard()}
+        setDrawMode={(mode:number)=>setDrawMode(mode)}
         saveCanvasToDB={saveCanvasToDB}
       />
       <div>

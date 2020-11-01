@@ -21,11 +21,11 @@ app.use(express.json());
 //ovo je struktura za sobe
 
 
-http.listen("4000", () => {
+http.listen("4000", () => { // sluzi za soket konekcije
   console.log('connected to 4000');
 });
 app.listen('4001', () => {
-  console.log('connected to express 4001');
+  console.log('connected to express 4001'); // express server za post i get requestove
 })
 
 const rooms: any = {
@@ -54,8 +54,12 @@ socketIO.on('connection', (socket: any) => { //event sta se desava kada se konek
   socket.on('draw', (e: any) => {//soket koji prosledjuje koordinate crteza svima u sobi
     // LoggerSingleton.logs.colors.push(e.color)
     socket.to(rooms[socket.id]).emit('draw', e)//event ime je draw
-    console.log("drawing");
+  });
 
+  socket.on('draw-shape', (e: any) => {//soket koji prosledjuje koordinate crteza svima u sobi
+    // LoggerSingleton.logs.colors.push(e.color)
+    socket.to(rooms[socket.id]).emit('draw-shape', e) 
+    
   });
 
   socket.on('update-word', (word: string) => {

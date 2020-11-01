@@ -4,9 +4,7 @@ import {NameContext} from '../../contexts/NameProvider';
 const WinnerBanner = () =>{
   const [winner,setWinner] = useContext(WinnerBannerContext);
   const [name,setName] = useContext(NameContext);
-  useEffect(()=>{
-    console.log('rend');
-    
+  useEffect(()=>{    
   },[winner]);
   const win = ():string =>{
     if(winner !== ''){
