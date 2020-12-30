@@ -5,16 +5,16 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 1em;
- 
+
   // Slider color style
-  input[type=range]::-webkit-slider-thumb {
-    background-color: $main-dark;
+  input[type="range"]::-webkit-slider-thumb {
+    background-color: $main-faded;
   }
-  input[type=range]::-moz-range-thumb {
-    background-color: $main-dark;
+  input[type="range"]::-moz-range-thumb {
+    background-color: $main-faded;
   }
-  input[type=range]::-ms-thumb {
-    background-color: $main-dark;
+  input[type="range"]::-ms-thumb {
+    background-color: $main-faded;
   }
 
   .clear-btn {
@@ -22,26 +22,23 @@
     width: 100% !important;
     border-radius: 10px;
     font-family: acme-regular !important;
-
   }
   .clear-btn:hover {
     background-color: $main-light;
   }
-  .buttons-container{
+  .buttons-container {
     width: 100%;
     margin-top: 5px;
     display: flex;
     justify-content: space-between;
-    a{
-        width: 100%;
-        background-color: $main-faded;
-        border-radius: 10px;
+    a {
+      width: 100%;
+      background-color: $main-faded;
+      border-radius: 10px;
     }
   }
-  #brush-size-slider  {
-      border: none;
-      color: $main-dark;
+  #brush-size-slider {
+    border: none;
+    color: $main-dark;
   }
-
 }
- 

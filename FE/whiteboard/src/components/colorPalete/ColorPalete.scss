@@ -1,14 +1,14 @@
 @import "./../../assets/Colors.scss";
 
-.color-palete-container{
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    row-gap: 10px;
-    .color-box{
-        height: 50px;
-        width: 50px;
-        cursor: pointer;
-        border-radius: 10%;
-        border: solid  5px $main-dark;
-    }
+.color-palete-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 10px;
+  .color-box {
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    border-radius: 10%;
+    border: solid 5px $main-faded;
+  }
 }

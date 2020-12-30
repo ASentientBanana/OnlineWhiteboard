@@ -1,4 +1,4 @@
-@import '../../assets/Colors.scss';
+@import "../../assets/Colors.scss";
 .whiteboard-container {
   padding: 0 !important;
   display: flex;
@@ -8,44 +8,43 @@
   width: 800px;
   canvas {
     border: #ebe4e4 solid 15px;
-    cursor:crosshair;
-    border-image-source: url('../../assets/images/SARAA.jpg');
+    cursor: crosshair;
+    // border-image-source: url('../../assets/images/SARAA.jpg');
+    border-color: $main-faded;
     border-image-slice: 40;
     border-image-repeat: stretch;
-    box-shadow: 0px 0px 800px 1px rgba(0, 0, 0,1);
+    box-shadow: 0px 0px 800px 1px rgba(0, 0, 0, 1);
   }
 }
-.word-input{
+.word-input {
   color: $main-dark;
   border-color: $main-dark !important;
   font-size: 1.5em;
-  .input-field{
+  .input-field {
     margin-top: 40px;
-    input{
-    border-bottom: 2px solid $main-dark;
-
+    input {
+      border-bottom: 2px solid $main-dark;
     }
   }
-  .submit-word-btn{
+  .submit-word-btn {
     background-color: $main-dark;
     border-radius: 10px;
   }
-  .submit-word-btn:hover{
+  .submit-word-btn:hover {
     background-color: $main-light;
     border-radius: 10px;
   }
 }
-.gallery-btn-div{
+.gallery-btn-div {
   margin-top: 30px;
   width: 100%;
-  a{
+  a {
     width: 100%;
     background-color: $main-faded;
     // text-justify: distribute;
     // text-align: center !important;
   }
-  a:hover{
+  a:hover {
     background-color: $main-light;
-
   }
 }

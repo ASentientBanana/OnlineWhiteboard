@@ -16,7 +16,7 @@
 .whiteboard-container canvas {
   border: #ebe4e4 solid 15px;
   cursor: crosshair;
-  border-image-source: url("../../assets/images/SARAA.jpg");
+  border-color: #1481ba;
   border-image-slice: 40;
   border-image-repeat: stretch;
   -webkit-box-shadow: 0px 0px 800px 1px black;
@@ -24,8 +24,8 @@
 }
 
 .word-input {
-  color: #580838;
-  border-color: #580838 !important;
+  color: #001021;
+  border-color: #001021 !important;
   font-size: 1.5em;
 }
 
@@ -34,16 +34,16 @@
 }
 
 .word-input .input-field input {
-  border-bottom: 2px solid #580838;
+  border-bottom: 2px solid #001021;
 }
 
 .word-input .submit-word-btn {
-  background-color: #580838;
+  background-color: #001021;
   border-radius: 10px;
 }
 
 .word-input .submit-word-btn:hover {
-  background-color: #8a5273;
+  background-color: #034748;
   border-radius: 10px;
 }
 
@@ -54,10 +54,9 @@
 
 .gallery-btn-div a {
   width: 100%;
-  background-color: #580838;
+  background-color: #1481ba;
 }
 
 .gallery-btn-div a:hover {
-  background-color: #8a5273;
+  background-color: #034748;
 }
-/*# sourceMappingURL=Whiteboard.css.map */

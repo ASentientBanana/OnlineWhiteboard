@@ -1,5 +1,5 @@
 body {
-  background-image: url("./assets/images/SARAA.jpg");
+  background-color: #001021;
 }
 
 @font-face {
@@ -10,4 +10,3 @@ body {
 * {
   font-family: acme-regular;
 }
-/*# sourceMappingURL=App.css.map */

@@ -1,18 +1,17 @@
 .register-user-page-container h1 {
-  color: #69071f;
+  color: #1481ba;
   font-size: 10em;
 }
 
 .register-user-page-container label {
-  color: #580838;
+  color: #1481ba;
 }
 
 .register-user-page-container input {
-  color: #580838;
+  color: #001021;
 }
 
 .register-user-page-container .join-btn {
-  background-color: #580838;
+  background-color: #1481ba;
   border-radius: 10px;
 }
-/*# sourceMappingURL=RegisterUser.css.map */

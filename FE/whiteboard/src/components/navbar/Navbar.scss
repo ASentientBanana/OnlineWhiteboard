@@ -1,8 +1,7 @@
-@import './../../assets/Colors.scss';
+@import "./../../assets/Colors.scss";
 nav {
   // border-bottom: solid black 2px;
   text-align: center;
-  background-image: linear-gradient($main-light, $main-dark, $main-light);
+  background-color: $main-dark;
   font-size: 2em;
-  
 }

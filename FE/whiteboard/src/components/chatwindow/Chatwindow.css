@@ -10,8 +10,8 @@
 #chat-container .form-container {
   max-width: 300px;
   padding: 10px;
-  border: #580838 solid 2px;
-  background-color: #580838;
+  border: #001021 solid 2px;
+  background-color: #001021;
   border-radius: 1%;
   -webkit-box-shadow: 15px 25px 10px 1px rgba(0, 0, 0, 0.431);
           box-shadow: 15px 25px 10px 1px rgba(0, 0, 0, 0.431);
@@ -19,7 +19,7 @@
 }
 
 #chat-container .form-container .chat-header {
-  background-color: #580838;
+  background-color: #001021;
   color: white;
   margin-top: 0;
 }
@@ -55,7 +55,7 @@
       grid-template-columns: 1fr 4fr;
   border-radius: 3% !important;
   padding: 5px;
-  border-bottom: solid #8a5273 1px;
+  border-bottom: solid #034748 1px;
 }
 
 #chat-container .form-container .chat-message img {
@@ -106,11 +106,11 @@
 }
 
 #chat-container .btn-container .send:hover {
-  background-color: #8a5273;
+  background-color: #034748;
 }
 
 #chat-container .btn-container .cancel:hover {
-  background-color: #8a5273;
+  background-color: #034748;
 }
 
 .open-button {
@@ -121,11 +121,10 @@
   bottom: 23px;
   right: 28px;
   width: 280px;
-  background-color: #580838;
+  background-color: #001021;
   font-family: acme-regular !important;
 }
 
 .open-button:hover {
-  background-color: #8a5273;
+  background-color: #034748;
 }
-/*# sourceMappingURL=Chatwindow.css.map */
