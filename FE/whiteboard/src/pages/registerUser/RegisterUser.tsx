@@ -3,9 +3,24 @@ import { Link } from "react-router-dom";
 import './RegisterUser.css'
 import { NameContext } from '../../contexts/NameProvider';
 export const RegisterUser = ({ socket }: any) => {
-  const [name, setName] = useState<string>("Jane Doe");
-  const [roomName, setRoomName] = useState<string>("Jane Doe");
+  const [userName, setUserName] = useState<string>("Jane Doe");
+  const [roomName, setRoomName] = useState<string>("Jane Does Room");
   const [nameCtx, setNameCtx] = useContext(NameContext);
+
+  const registerUser = () => {
+    if(!userName) return;
+    fetch('http://127.0.0.1:4001/authenticateUser', {
+      method:'POST',
+      headers: {"Content-type": "application/json"},
+      body:JSON.stringify({data:{
+        userName,
+        roomName
+      }})
+    })
+    // setNameCtx(name);
+    // socket.emit('join_room', roomName) //salje event join room serveru i objekat koji sadrzi imei sobu u koju bi da udje korisnik
+  }
+
   return (
     <div className="container center register-user-page-container">
       <h1>Online Pantomime</h1>
@@ -15,7 +30,7 @@ export const RegisterUser = ({ socket }: any) => {
           type="text"
           name="username"
           onChange={(e: any) => {
-            setName(e.target.value);
+            setUserName(e.target.value);
           }}
         />
         <label htmlFor="room"><h4>Enter room name</h4></label>
@@ -27,12 +42,10 @@ export const RegisterUser = ({ socket }: any) => {
           }}
         />
         <Link to={{
-          pathname: `/draw/${name}`,
+          // /draw/${name}
+          pathname: `/draw/${userName}?q=${roomName}`,
         }}>
-          <div className="waves-effect waves-light btn join-btn" onClick={() => {
-            setNameCtx(name);
-            socket.emit('join_room', roomName) //salje event join room serveru i objekat koji sadrzi imei sobu u koju bi da udje korisnik
-          }}><i className="material-icons left">brush</i>Join/Create  Room</div>
+          <div className="waves-effect waves-light btn join-btn" onClick={registerUser}><i className="material-icons left">brush</i>Join/Create  Room</div>
         </Link>
       </form>
     </div>

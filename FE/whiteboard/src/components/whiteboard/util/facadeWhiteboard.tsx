@@ -84,6 +84,11 @@ export default class WhiteboardFacade {
     return { endPositionX, endPositionY, data }
   }
 
+  moveBrush(x:number,y:number){
+    if(this.ctx) {
+      this.ctx.moveTo(x,y)
+    }
+  }
   private drawRectangle(startX: number, startY: number, endPosX: number, endPosY: number, color: string,lineWidth:number=1) {
     this.ctx!.strokeStyle = color;
     this.ctx!.lineWidth = lineWidth;

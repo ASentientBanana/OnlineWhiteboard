@@ -4,14 +4,12 @@ class WhiteboardBuilder {
     canvas: WhiteboardFacade;
     constructor(canvas: HTMLCanvasElement) {
       this.canvas = new WhiteboardFacade(canvas);
-      this.canvas.canvas.height = 800;
-      this.canvas.canvas.width = 600;
     }
-    withHeight(height: number) {
+    withHeight(height: number = 800) {
       this.canvas.canvas.height = height;
       return this;
     }
-    withWidth(width: number) {
+    withWidth(width: number = 600) {
       this.canvas.canvas.width = width;
       return this;
     }
