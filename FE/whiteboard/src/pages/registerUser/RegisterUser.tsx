@@ -43,7 +43,7 @@ export const RegisterUser = ({ socket }: any) => {
         />
         <Link to={{
           // /draw/${name}
-          pathname: `/draw/${userName}?q=${roomName}`,
+          pathname: `/draw/${userName}?roomName=${roomName}`,
         }}>
           <div className="waves-effect waves-light btn join-btn" onClick={registerUser}><i className="material-icons left">brush</i>Join/Create  Room</div>
         </Link>

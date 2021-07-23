@@ -7,7 +7,7 @@ interface tools {
   canvasCtx: CanvasRenderingContext2D;
 }
 // ovde se nalaze paleta i dugmici/slajder koji pozivajvaju funkcije koje smo prosledili u kmponentu
-const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas, saveCanvasToDB, setDrawMode }: any) => {
+const Tools = ({ clearCanvas, brushSize, paintCanvas, saveCanvas, saveCanvasToDB, setDrawMode }: any) => {
   const sliderRef = createRef<HTMLInputElement>();
   useEffect(() => {
     if (sliderRef.current) {
@@ -20,9 +20,7 @@ const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas, saveCanvasTo
       <div>
         <button
           className="waves-effect waves-light btn col s6 clear-btn"
-          onClick={() => {
-            canvasContext();
-          }}
+          onClick={() => clearCanvas()}
         >
           Clear Canvas
         </button>
@@ -32,7 +30,7 @@ const Tools = ({ canvasContext, brushSize, paintCanvas, saveCanvas, saveCanvasTo
           min="1"
           max="60"
           onChange={(e) => {
-            brushSize(e.target.value);
+            brushSize.current = parseInt(e.target.value);
           }}
           ref={sliderRef}
         />

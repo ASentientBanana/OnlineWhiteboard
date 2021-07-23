@@ -21,6 +21,7 @@
   border-image-repeat: stretch;
   -webkit-box-shadow: 0px 0px 800px 1px black;
           box-shadow: 0px 0px 800px 1px black;
+  background-color: #d6c6c7;
 }
 
 .word-input {
