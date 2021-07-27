@@ -56,7 +56,6 @@ class WhiteboardUtility {
       this.canvas.width,
       this.canvas.height
     );
-    console.log("saving image data");
   }
   drawRectangleRemote(
     startX: number,
@@ -153,12 +152,23 @@ class WhiteboardUtility {
   }
 
   clearCanvas() {
-    console.log("clearing");
-
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
   moveBrush(x: number, y: number) {
     this.ctx.moveTo(x, y);
+  }
+  paintCanvas(color:string){
+    this.ctx.fillStyle = color;
+    this.ctx?.fillRect(0,0,this.canvas.width,this.canvas.height);
+  }
+  saveWhiteboardLocal() { 
+    //konveruje sliku u base 64 i pita korisnika da li bi da download
+    const data = this.canvas.toDataURL('image/jpeg', 1.0);
+    const a = document.createElement('a');
+    a.href = data;
+    a.download = `canvas.jpg`;
+    a.click();
+    return data
   }
 }
 

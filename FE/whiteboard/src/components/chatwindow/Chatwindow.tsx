@@ -9,7 +9,7 @@ import "./Chatwindow.css";
 import { WinnerBannerContext } from '../../contexts/WinnerBannerProvider';
 
 
-export const Chatwindow = ({ socket, name }: any) => {
+export const Chatwindow = ({ socket, nameInfo }: any) => {
   const [winner, setWinner] = useContext(WinnerBannerContext);
   const [chatInputText, setChatInputText] = useState("");
   const inputRef = createRef<HTMLTextAreaElement>();
@@ -19,7 +19,7 @@ export const Chatwindow = ({ socket, name }: any) => {
 
   useEffect(() => {
     //ovde idu socket eventi i kada stigne poruka ova komponenta se renderuje ponovvo sa novim porukama
-    socket.on("chat-message", (msg: any) => {
+    socket.on("sendChatMessage", (msg: any) => {
       console.log(msg);
       appendMessages(msg);
     });
@@ -30,7 +30,7 @@ export const Chatwindow = ({ socket, name }: any) => {
   }, [messages]);
 
   const appendMessages = (msg: any) => {
-    if (msg.name === name) msg.name = "You";
+    if (msg.userName === nameInfo.userName) msg.userName = "You";
     setMessages([...messages, msg]);
   };
   const chatInputHandle = (e: any) => {
@@ -40,8 +40,8 @@ export const Chatwindow = ({ socket, name }: any) => {
     e.preventDefault();
     if (chatInputText) {
       const body = chatInputText;
-      const msg = { name, body };
-      socket.emit("chat-message", msg);
+      const msg = { userName:nameInfo.userName,roomName:nameInfo.roomName, body };
+      socket.emit("sendChatMessage", msg);
       setChatInputText("");
       if (inputRef.current) inputRef.current.value = "";
     }
@@ -71,7 +71,7 @@ export const Chatwindow = ({ socket, name }: any) => {
           <h3 className="center chat-header"> Chat</h3>
           <div className="textarea-output" ref={messageContainerRef}>
             {messages.map((msg, index) => (
-              <ChatMessage body={msg.body} time={msg.name} name={msg.name} key={index} />
+              <ChatMessage body={msg.body} time={msg.name} name={msg.userName} key={index} />
             ))}
           </div>
           <textarea

@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import WhiteboardUtility from "./whiteboardF";
 import syncToSocket from "../../util";
 import { useParams } from "react-router-dom";
+
 type props = {
   nameInfo: {
     userName: string;
@@ -22,6 +23,7 @@ type props = {
   };
   socket: SocketIOClient.Socket;
 };
+
 // 1 defaulr 2 rectangle 3 filled rectangle
 export const Whiteboard = ({ nameInfo, socket }: props) => {
   const canvasRef = createRef<HTMLCanvasElement>();
@@ -59,8 +61,6 @@ export const Whiteboard = ({ nameInfo, socket }: props) => {
     whiteboard?.moveBrush(e.x, e.y);
   });
   socket?.on("drawRectangle", (e: any) => {
-    console.log("rectangle remote");
-
     whiteboard?.drawRectangleRemote(
       e.startX,
       e.startY,
@@ -71,6 +71,13 @@ export const Whiteboard = ({ nameInfo, socket }: props) => {
       e.isFilled
     );
   });
+
+  socket?.on("paintCanvas",(e:string)=>{
+    console.log("painting "+ e);
+    
+    whiteboard?.paintCanvas(e);
+  })
+
   const onMouseDownHandler = (e: MouseEvent<HTMLCanvasElement>) => {
     isDrawing.current = true;
     const [x, y] = getOffset(e.clientX, e.clientY, canvasRef.current!);
@@ -176,7 +183,11 @@ export const Whiteboard = ({ nameInfo, socket }: props) => {
         break;
     }
   };
-
+  const paintCanvasHandler = ()=> {
+    const data = { userInfo: nameInfo,color:currColor}
+    whiteboard?.paintCanvas(currColor);
+    socket?.emit("paintCanvas",data);
+  }
   return (
     <div>
       <div className="col s12 m12 l12 whiteboard-container" ref={null}>
@@ -194,8 +205,8 @@ export const Whiteboard = ({ nameInfo, socket }: props) => {
       <Tools
         clearCanvas={clearCanvas}
         brushSize={brushSize}
-        paintCanvas={() => {}}
-        saveCanvas={() => {}}
+        paintCanvas={paintCanvasHandler}
+        saveCanvas={() => whiteboard?.saveWhiteboardLocal()}
         setDrawMode={(mode: number) => {
           drawType.current = mode;
         }}
