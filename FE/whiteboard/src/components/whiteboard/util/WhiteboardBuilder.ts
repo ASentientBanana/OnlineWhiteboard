@@ -1,4 +1,4 @@
-import WhiteboardFacade from './facadeWhiteboard';
+import WhiteboardFacade from '../whiteboardF';
 
 class WhiteboardBuilder {
     canvas: WhiteboardFacade;

@@ -1,12 +1,15 @@
 import React from 'react';
 import './Navbar.css';
+import { Link } from "react-router-dom";
 
 export const Navbar = ()=>{
 
     return (
         <nav>
         <div className="nav-wrapper">
-          <a href="draw" className="brand-logo center">Whiteboard</a>
+          <Link className="brand-logo center" to='/'>
+            Whiteboard
+          </Link>
         </div>
       </nav>
     );

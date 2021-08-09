@@ -1,10 +1,10 @@
 const SequalizUser = require('sequelize');
-const userDB = require('../config/database');
+import userDB from '../config/database'
+// const userDB = require('../config/database');
 
 
 const UserModel = userDB.define('user',{
-
-    user_name:{
+    name:{
         type:SequalizUser.STRING 
     },
 },
@@ -13,4 +13,4 @@ const UserModel = userDB.define('user',{
     tableName: 'users'
 }
 );
-module.exports = UserModel; 
+export default UserModel;

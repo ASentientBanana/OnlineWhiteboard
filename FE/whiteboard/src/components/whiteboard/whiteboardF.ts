@@ -152,7 +152,7 @@ class WhiteboardUtility {
   }
 
   clearCanvas() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.paintCanvas('white');
   }
   moveBrush(x: number, y: number) {
     this.ctx.moveTo(x, y);
@@ -161,7 +161,7 @@ class WhiteboardUtility {
     this.ctx.fillStyle = color;
     this.ctx?.fillRect(0,0,this.canvas.width,this.canvas.height);
   }
-  saveWhiteboardLocal() { 
+  saveWhiteboardLocal() {
     //konveruje sliku u base 64 i pita korisnika da li bi da download
     const data = this.canvas.toDataURL('image/jpeg', 1.0);
     const a = document.createElement('a');
@@ -169,6 +169,10 @@ class WhiteboardUtility {
     a.download = `canvas.jpg`;
     a.click();
     return data
+  }
+  saveWhiteboardRemote() {
+    //konveruje sliku u base 64 i pita korisnika da li bi da download
+     return this.canvas.toDataURL('image/png', 1.0).split(',')[1]
   }
 }
 

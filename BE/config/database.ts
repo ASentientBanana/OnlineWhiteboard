@@ -1,6 +1,6 @@
 const Sequalize = require('sequelize');
 
-module.exports = new Sequalize('whiteboard','postgres','lazy',{
+const sequalize =  new Sequalize('whiteboard','type','password',{
   host:'localhost',
   dialect:'postgres',
   operatorsAliases:'false',
@@ -11,3 +11,4 @@ module.exports = new Sequalize('whiteboard','postgres','lazy',{
     idle:10000
   }
 });
+export default sequalize;

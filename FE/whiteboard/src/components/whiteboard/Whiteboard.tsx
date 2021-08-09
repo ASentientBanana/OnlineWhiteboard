@@ -5,17 +5,13 @@ import React, {
   useRef,
   useContext,
   useState,
-  InputHTMLAttributes,
-  MutableRefObject,
 } from "react";
 import "./Whiteboard.css";
 import { ColorContext } from "../../contexts/ColorContext";
 import Tools from "../tools/Tools";
 import { Link } from "react-router-dom";
 import WhiteboardUtility from "./whiteboardF";
-import syncToSocket from "../../util";
-import { useParams } from "react-router-dom";
-
+import WhiteboardBuilder from './util/WhiteboardBuilder';
 type props = {
   nameInfo: {
     userName: string;
@@ -33,8 +29,11 @@ export const Whiteboard = ({ nameInfo, socket }: props) => {
   const [currColor, setCurrColor] = useContext(ColorContext);
   const [whiteboard, setWhiteboard] = useState<WhiteboardUtility>();
   const startPos = useRef({ x: 0, y: 0 });
-  // new WhiteboardBuilder(canvasRef.current).withHeight(500).withWidth(500).withBackgroundColor('red').build()
-  // const [socket,setSocket] = useState<SocketIOClient.Socket>()
+  const guess = useRef<string>('');
+  const [isShowWinnerBanner, setIsShowWinnerBanner] = useState<boolean>(false);
+  const winningGuess = useRef<string>('')
+  const winner = useRef<string>('')
+  
   const getOffset = (
     // metoda za racunjane offseta canvasa da u odnosu na stranu da ne bi bilo ofseta kada se crta
     clientX: number,
@@ -47,14 +46,31 @@ export const Whiteboard = ({ nameInfo, socket }: props) => {
     return [offsetX - 16, offsetY - 16]; // minus je fontsize jer pravi offset
   };
   useEffect(() => {
-    // if(!socket) setSocket(getSocket())
     if (canvasRef.current)
-      setWhiteboard(new WhiteboardUtility(canvasRef.current));
+      setWhiteboard( new WhiteboardBuilder(canvasRef.current).withHeight(600).withWidth(800).withBackgroundColor('white').build());
   }, []);
 
+  const onSubmitGuess = () => {
+    socket.emit('userGuess', {
+      userName: nameInfo.userName,
+      roomName: nameInfo.roomName,
+      guess: guess.current
+    })
+  };
+  const showWinnerBanner = (winnerName: string, guess: string) => {
+    winningGuess.current = guess;
+    winner.current = winnerName;
+    setIsShowWinnerBanner(true);
+    setTimeout(()=>{
+      setIsShowWinnerBanner(false);
+    },3000)
+  }
+  socket?.on("correctGuess", (e: any) => {
+    const { winnerName, guess } = e;
+    showWinnerBanner(winnerName, guess);
+  })
+
   socket?.on("drawing", (e: any) => {
-    //salje se draw event serveru
-    // console.log(e);
     whiteboard?.drawRemote(e);
   });
   socket?.on("moveBrush", (e: any) => {
@@ -72,9 +88,10 @@ export const Whiteboard = ({ nameInfo, socket }: props) => {
     );
   });
 
-  socket?.on("paintCanvas",(e:string)=>{
-    console.log("painting "+ e);
-    
+
+  socket?.on("paintCanvas", (e: string) => {
+    console.log("painting " + e);
+
     whiteboard?.paintCanvas(e);
   })
 
@@ -183,10 +200,15 @@ export const Whiteboard = ({ nameInfo, socket }: props) => {
         break;
     }
   };
-  const paintCanvasHandler = ()=> {
-    const data = { userInfo: nameInfo,color:currColor}
+  const paintCanvasHandler = () => {
+    const data = { userInfo: nameInfo, color: currColor }
     whiteboard?.paintCanvas(currColor);
-    socket?.emit("paintCanvas",data);
+    socket?.emit("paintCanvas", data);
+  }
+  const saveToCloud = async()=>{
+    //  image64, userName
+    const imageString = whiteboard?.saveWhiteboardRemote();
+    socket.emit('saveImage',{imageString,userName:nameInfo.userName})
   }
   return (
     <div>
@@ -195,11 +217,9 @@ export const Whiteboard = ({ nameInfo, socket }: props) => {
           ref={canvasRef}
           onMouseDown={onMouseDownHandler}
           onMouseUp={onMouseUpHandler}
-          onMouseLeave={(e) => {}}
+          onMouseLeave={(e) => { }}
           className="canvas"
           onMouseMove={onMouseMoveHandlerDrawing}
-          height="600"
-          width="800"
         ></canvas>
       </div>
       <Tools
@@ -210,39 +230,39 @@ export const Whiteboard = ({ nameInfo, socket }: props) => {
         setDrawMode={(mode: number) => {
           drawType.current = mode;
         }}
-        saveCanvasToDB={() => {}}
+        saveCanvasToDB={() => { saveToCloud()}}
       />
       <div>
         <div className="gallery-btn-div">
           <Link
-            to={`${nameInfo.userName}/gallery`}
+            to={`/gallery/${nameInfo.userName}`}
             className="waves-effect waves-light btn "
           >
             <i className="material-icons center">burst_mode</i>gallery
           </Link>
         </div>
         <div className="col s12 word-input">
-          Write what you are drawing here:
+          Write is the drawing:
           <div className="input-field inline">
             <input
               id="drawing_word"
               type="text"
               className="validate"
-              ref={null}
+              onChange={(e) => guess.current = e.target.value}
             />
-            <span
-              className="helper-text"
-              data-error="wrong"
-              data-success="right"
-            >
-              Owner only
-            </span>
             <a
               className="waves-effect waves-light btn submit-word-btn"
-              onClick={() => {}}
+              onClick={onSubmitGuess}
             >
               <i className="material-icons left">import_contacts</i>Submit word
             </a>
+            {
+              isShowWinnerBanner ?
+                <div className="winnerBanner">
+                  {winner.current} won by guessing {winningGuess.current}
+                </div>
+                : null
+            }
           </div>
         </div>
       </div>

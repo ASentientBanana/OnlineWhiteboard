@@ -32,9 +32,9 @@ function App() {
             <Route exact path="/login">
               <RegisterUser socket={socket} />
             </Route>
-            <Route exact path="/draw/:userName" component={DrawingPage} />{/*:name je parametar u URL-u koji pasujemona stranicu to je username */}
+            <Route exact path="/draw/:name/:room" component={DrawingPage} />{/*:name je parametar u URL-u koji pasujemona stranicu to je username */}
             <Route exact path="/gallery/:name">{/*:name je parametar u URL-u koji pasujemona stranicu to je username */}
-              <Gallery socket={socket} />
+              <Gallery  />
             </Route>
           </Switch>
         </Router>
